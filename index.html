@@ -141,15 +141,14 @@
   }
   .hand-poster.is-visible { opacity: 1; }
 
-  /* Gradient: solid white upper zone for text → reveals hand in lower viewport */
+  /* Reading zone: white on left for text, hand glows through on the right */
   .hand-bg::before {
     content: ''; position: absolute; inset: 0; z-index: 2;
-    background: linear-gradient(180deg,
-      rgba(248,251,255,1.00)  0%,
-      rgba(248,251,255,1.00) 28%,
-      rgba(248,251,255,0.82) 44%,
-      rgba(248,251,255,0.18) 62%,
-      rgba(248,251,255,0.00) 76%);
+    background: linear-gradient(to right,
+      rgba(248,251,255,0.97)  0%,
+      rgba(248,251,255,0.90) 26%,
+      rgba(248,251,255,0.42) 48%,
+      rgba(248,251,255,0.00) 62%);
   }
 
   /* ── LOADER ── */
@@ -734,15 +733,14 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas, { passive: true });
 
-// ── Draw: hand scaled to 78% of viewport height, bottom-center anchored ──
+// ── Draw: cover-scale, centered, gently bottom-shifted ──
 function drawFrame(img) {
   const cw = canvas.width, ch = canvas.height;
   const iw = img.naturalWidth, ih = img.naturalHeight;
-  // Contain to 78% of viewport height — keeps full hand visible, sitting at the bottom
-  const scale = (ch * 0.78) / ih;
+  const scale = Math.max(cw / iw, ch / ih);
   const dw = iw * scale, dh = ih * scale;
-  const dx = (cw - dw) * 0.5;  // center horizontally
-  const dy = ch - dh;           // bottom-align
+  const dx = (cw - dw) * 0.78;   // strongly right-aligned so hand plays in right-side whitespace
+  const dy = (ch - dh) * 0.88;   // subtly more bottom-shifted than the original 0.82
   ctx.clearRect(0, 0, cw, ch);
   ctx.drawImage(img, dx, dy, dw, dh);
 }

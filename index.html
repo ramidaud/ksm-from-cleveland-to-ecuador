@@ -14,12 +14,12 @@
     --ink: #1a1a18;
     --mid: #6b6b65;
     --rule: #d8d8d2;
-    --ksu-blue:      #002664;
-    --ksu-gold:      #EEB111;
-    --ksu-gold-pale: #FDF3D0;
-    --stage-width: clamp(240px, 32vw, 520px);
-    --content-gutter: clamp(2rem, 4.5vw, 5.5rem);
-    --content-width: min(840px, calc(100vw - var(--stage-width) - var(--content-gutter) - 2rem));
+    --ksu-blue:  #002664;
+    --ksu-gold:  #EEB111;
+    --col:       min(660px, calc(100vw - 4rem));   /* body text column  */
+    --col-wide:  min(980px, calc(100vw - 4rem));   /* split panels      */
+    --col-quote: min(600px, calc(100vw - 4rem));   /* pull quote        */
+    --margin-l:  clamp(2rem, 6vw, 5rem);           /* left page margin  */
   }
 
   html { scroll-behavior: smooth; }
@@ -33,41 +33,25 @@
 
   /* ── PROGRESS ── */
   .progress-bar {
-    position: fixed;
-    top: 0; left: 0;
-    height: 2px;
-    background: var(--ksu-gold);
-    width: 0%;
-    z-index: 200;
-    transition: width 0.04s linear;
+    position: fixed; top: 0; left: 0;
+    height: 2px; background: var(--ksu-gold);
+    width: 0%; z-index: 200; transition: width 0.04s linear;
   }
 
   /* ── BRAND BAR ── */
-  .brand-bar {
-    height: 4px;
-    background: var(--ksu-blue);
-    width: 100%;
-    position: relative;
-    z-index: 21;
-  }
+  .brand-bar { height: 4px; background: var(--ksu-blue); width: 100%; position: relative; z-index: 21; }
 
   /* ── MASTHEAD ── */
   .masthead {
-    position: absolute;
-    top: 4px;
-    left: 0; right: 0;
-    z-index: 30;
+    position: absolute; top: 4px; left: 0; right: 0; z-index: 30;
     padding: 1.6rem 3.5rem;
     background: transparent;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; justify-content: space-between; align-items: center;
     transition: background 0.3s ease, border-color 0.3s ease;
     border-bottom: 1px solid rgba(255,255,255,0.1);
   }
   .masthead.scrolled {
-    position: fixed;
-    top: 0;
+    position: fixed; top: 0;
     background: var(--white);
     border-bottom: 1px solid var(--rule);
   }
@@ -75,301 +59,221 @@
   .masthead.scrolled .masthead-date { color: var(--mid); }
   .masthead-brand { display: flex; flex-direction: column; gap: 0.55rem; }
   .masthead-brandmark-wrap {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    padding: 0.5rem 0.8rem 0.44rem;
-    border-radius: 999px;
-    background: rgba(0, 38, 100, 0.88);
-    box-shadow: 0 10px 24px rgba(0, 22, 56, 0.14);
+    display: inline-flex; align-items: center; width: fit-content;
+    padding: 0.5rem 0.8rem 0.44rem; border-radius: 999px;
+    background: rgba(0,38,100,0.88);
+    box-shadow: 0 10px 24px rgba(0,22,56,0.14);
     transition: background 0.3s ease, box-shadow 0.3s ease;
   }
-  .masthead-brandmark {
-    display: block;
-    width: clamp(140px, 16vw, 220px);
-    height: auto;
-  }
-  .masthead-section,
-  .masthead-date {
+  .masthead-brandmark { display: block; width: clamp(140px,16vw,220px); height: auto; }
+  .masthead-section, .masthead-date {
     font-family: 'DM Mono', monospace;
-    font-size: 0.52rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
+    font-size: 0.52rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
     transition: color 0.3s ease;
   }
   .masthead.scrolled .masthead-brandmark-wrap { background: var(--ksu-blue); box-shadow: none; }
 
   /* ── HERO ── */
-  .hero-image-wrap {
-    position: relative;
-    height: 100vh;
-    overflow: hidden;
-    z-index: 20;
-  }
+  .hero-image-wrap { position: relative; height: 100vh; overflow: hidden; z-index: 20; }
   .hero-parallax-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 140%;
-    object-fit: cover;
-    object-position: center 30%;
-    will-change: transform;
-    top: -20%;
+    position: absolute; inset: 0;
+    width: 100%; height: 140%;
+    object-fit: cover; object-position: center 30%;
+    will-change: transform; top: -20%;
   }
   .hero-gradient {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: linear-gradient(to bottom,
-      rgba(0,26,64,0.50) 0%,
-      rgba(0,26,64,0.08) 30%,
-      rgba(0,0,0,0.08) 55%,
-      rgba(0,0,0,0.76) 100%);
+      rgba(0,26,64,0.50) 0%, rgba(0,26,64,0.08) 30%,
+      rgba(0,0,0,0.08) 55%, rgba(0,0,0,0.76) 100%);
     z-index: 1;
   }
   .hero-content {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    z-index: 2;
-    padding: 0 4rem 5.5rem;
-    max-width: 900px;
+    position: absolute; bottom: 0; left: 0; right: 0;
+    z-index: 2; padding: 0 4rem 5.5rem; max-width: 900px;
   }
   .hero-kicker {
     font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--ksu-gold);
-    margin-bottom: 1.6rem;
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
+    font-size: 0.58rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--ksu-gold);
+    margin-bottom: 1.6rem; display: flex; align-items: center; gap: 0.9rem;
   }
   .hero-kicker::before {
-    content: '';
-    display: inline-block;
-    width: 28px; height: 1px;
-    background: var(--ksu-gold);
-    flex-shrink: 0;
+    content: ''; display: inline-block;
+    width: 28px; height: 1px; background: var(--ksu-gold); flex-shrink: 0;
   }
   .hero h1 {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(3.4rem, 8vw, 9.5rem);
-    line-height: 0.94;
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    margin-bottom: 2rem;
-    color: #ffffff;
+    font-size: clamp(3.4rem,8vw,9.5rem); line-height: 0.94;
+    font-weight: 600; letter-spacing: -0.03em; margin-bottom: 2rem; color: #fff;
   }
   .hero-deck {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
-    line-height: 1.68;
-    color: rgba(255,255,255,0.7);
-    font-style: italic;
-    max-width: 440px;
-    margin-bottom: 2.2rem;
+    font-size: clamp(1.05rem,1.5vw,1.3rem); line-height: 1.68;
+    color: rgba(255,255,255,0.7); font-style: italic;
+    max-width: 440px; margin-bottom: 2.2rem;
   }
   .byline {
     font-family: 'DM Mono', monospace;
-    font-size: 0.52rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.38);
-    display: flex;
-    gap: 2.5rem;
+    font-size: 0.52rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(255,255,255,0.38);
+    display: flex; gap: 2.5rem;
   }
 
   /* ── SCROLL ZONE ── */
   .scroll-zone { position: relative; background: transparent; }
 
+  /* ── HAND BACKGROUND — full viewport, sticky ── */
   .hand-bg {
-    position: sticky;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100vh;
+    position: sticky; top: 0; left: 0;
+    width: 100%; height: 100vh;
     margin-bottom: -100vh;
-    pointer-events: none;
-    z-index: 0;
-    background: #fafcff;
-    overflow: hidden;
-    will-change: transform;
+    pointer-events: none; z-index: 0;
+    background: #f8fbff;
+    overflow: hidden; will-change: transform;
   }
   .hand-poster {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center 40%;
-    opacity: 0;
-    transition: opacity 0.45s ease;
+    object-fit: cover; object-position: center 70%;
+    opacity: 0; transition: opacity 0.45s ease;
   }
   .hand-poster.is-visible { opacity: 1; }
+
+  /* Gradient: solid white upper zone for text → reveals hand in lower viewport */
   .hand-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg,
-      rgba(250,252,255,0.97) 0%,
-      rgba(250,252,255,0.90) 16%,
-      rgba(250,252,255,0.60) 32%,
-      rgba(250,252,255,0.18) 50%,
-      rgba(250,252,255,0.06) 68%,
-      rgba(250,252,255,0.00) 82%);
-    z-index: 2;
+    content: ''; position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(180deg,
+      rgba(248,251,255,1.00)  0%,
+      rgba(248,251,255,1.00) 28%,
+      rgba(248,251,255,0.82) 44%,
+      rgba(248,251,255,0.18) 62%,
+      rgba(248,251,255,0.00) 76%);
   }
 
   /* ── LOADER ── */
   #loader {
-    position: fixed;
-    inset: 0;
-    background: var(--white);
-    z-index: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1.4rem;
-    transition: opacity 0.5s ease;
+    position: fixed; inset: 0; background: var(--white); z-index: 500;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1.4rem; transition: opacity 0.5s ease;
   }
   #loader.done { opacity: 0; pointer-events: none; }
   .loader-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.52rem;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--mid);
+    font-size: 0.52rem; letter-spacing: 0.26em;
+    text-transform: uppercase; color: var(--mid);
   }
   .loader-bar-track { width: 96px; height: 1px; background: var(--rule); }
   .loader-bar-fill { height: 1px; background: var(--ksu-gold); width: 0%; transition: width 0.1s linear; }
 
-  /* ── ARTICLE SCROLL ── */
+  /* ── ARTICLE SCROLL — text floats above the hand ── */
   .article-scroll {
-    position: relative;
-    z-index: 10;
-    padding-bottom: 0;
-    padding-left: 2.2rem;
-    background: transparent;
+    position: relative; z-index: 10;
+    width: 100%; padding: 0;
   }
 
   .reveal-spacer {
-    height: 34vh;
-    display: flex;
-    align-items: flex-end;
-    padding: 0 0 4rem 0;
-    position: relative;
-    z-index: 1;
+    height: 30vh; display: flex; align-items: flex-end;
+    padding: 0 0 3rem var(--margin-l);
+    position: relative; z-index: 1;
   }
   .scroll-cue {
     font-family: 'DM Mono', monospace;
-    font-size: 0.52rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--mid);
-    animation: breathe 2.4s ease-in-out infinite;
-    transition: opacity 0.4s ease;
+    font-size: 0.52rem; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--mid);
+    animation: breathe 2.4s ease-in-out infinite; transition: opacity 0.4s ease;
   }
   .scroll-cue.hidden { opacity: 0 !important; animation: none; }
-  @keyframes breathe { 0%,100% { opacity:0.22; } 50% { opacity: 0.85; } }
+  @keyframes breathe { 0%,100% { opacity:.22; } 50% { opacity:.85; } }
 
   /* ── TEXT PANELS ── */
   .text-panel {
-    width: var(--content-width);
-    margin: 0; padding: 0;
-    background: transparent;
-    opacity: 0;
-    transform: translateY(22px);
+    width: var(--col);
+    margin-left: var(--margin-l);
+    padding: 0; background: transparent;
+    opacity: 0; transform: translateY(22px);
     transition: opacity 0.72s ease, transform 0.72s ease;
   }
   .text-panel.visible { opacity: 1; transform: translateY(0); }
-  .text-panel--lead {
-    width: min(780px, calc(100vw - var(--stage-width) - var(--content-gutter)));
-    margin-top: 0.5rem;
-  }
+
   .text-panel--split {
-    width: min(960px, calc(100vw - var(--stage-width) - (var(--content-gutter) * 0.5)));
+    width: var(--col-wide);
   }
+
+  /* ── PANEL GRID — text + photo ── */
   .panel-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-    gap: 4rem;
-    align-items: start;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: 3.8rem; align-items: start;
   }
   .panel-copy, .panel-visual { min-width: 0; }
-  .panel-copy { max-width: 60ch; }
+  .panel-copy { max-width: 58ch; }
+
   .panel-visual img {
     width: 100%; display: block;
-    aspect-ratio: 4 / 5; object-fit: cover;
-    box-shadow: 0 28px 60px rgba(0, 38, 100, 0.09);
+    aspect-ratio: 4/5; object-fit: cover;
+    box-shadow: 0 28px 60px rgba(0,38,100,0.09);
   }
   .panel-visual--uncropped img {
     aspect-ratio: auto; height: auto;
-    max-height: 76vh; object-fit: contain;
-    object-position: center top;
-    box-shadow: 0 20px 44px rgba(0, 38, 100, 0.07);
+    max-height: 55vh; object-fit: contain; object-position: center top;
+    box-shadow: 0 20px 44px rgba(0,38,100,0.07);
   }
-  .panel-visual--sticky { position: sticky; top: 16vh; align-self: start; }
+  .panel-visual--sticky { position: sticky; top: 10vh; align-self: start; }
   .panel-visual figcaption {
     font-family: 'DM Mono', monospace;
     font-size: 0.44rem; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--mid);
     margin-top: 0.65rem; line-height: 1.8;
-    border-top: 1px solid rgba(0, 38, 100, 0.07);
-    padding-top: 0.5rem;
+    border-top: 1px solid rgba(0,38,100,0.07); padding-top: 0.5rem;
   }
 
   /* ── LEAD OPENING ── */
   .lead-label {
-    display: block;
-    font-family: 'DM Mono', monospace;
+    display: block; font-family: 'DM Mono', monospace;
     font-size: 0.5rem; letter-spacing: 0.24em;
-    text-transform: uppercase; color: var(--ksu-blue);
-    margin-bottom: 1.4rem;
+    text-transform: uppercase; color: var(--ksu-blue); margin-bottom: 1.4rem;
   }
   .lead-standfirst {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(1.3rem, 2.1vw, 1.8rem);
-    line-height: 1.5; font-weight: 500; font-style: italic;
-    color: var(--ink); margin-bottom: 2.6rem;
-    max-width: 50ch; letter-spacing: -0.01em;
+    font-size: clamp(1.28rem,2vw,1.75rem); line-height: 1.5;
+    font-weight: 500; font-style: italic; color: var(--ink);
+    margin-bottom: 2.4rem; max-width: 50ch; letter-spacing: -0.01em;
   }
 
   /* ── BODY TYPOGRAPHY ── */
   .article-text { font-size: 1.06rem; line-height: 2.0; }
   .article-text p { margin-bottom: 1.75rem; }
   .article-text p:last-child { margin-bottom: 0; }
-  /* Drop cap only on the very first paragraph */
+
+  /* Drop cap: ONLY the opening paragraph */
   .text-panel--lead .article-text > p:first-of-type::first-letter {
-    float: left;
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    float: left; font-family: 'Cormorant Garamond', Georgia, serif;
     font-size: 4.4rem; line-height: 0.8;
-    margin: 0.07em 0.1em 0 0;
-    font-weight: 700; color: var(--ksu-blue);
+    margin: 0.07em 0.1em 0 0; font-weight: 700; color: var(--ksu-blue);
   }
 
   /* ── STANDALONE PULL QUOTE ── */
   .standalone-quote {
-    width: min(760px, calc(100vw - var(--stage-width) - var(--content-gutter) - 2rem));
-    margin: 3.5rem 0;
-    padding: 0; position: relative; z-index: 10;
+    width: var(--col-quote);
+    margin-left: var(--margin-l);
+    margin-top: 3.5rem; margin-bottom: 3.5rem;
     opacity: 0; transform: translateY(22px);
     transition: opacity 0.72s ease, transform 0.72s ease;
   }
   .standalone-quote.visible { opacity: 1; transform: translateY(0); }
   .standalone-quote-mark {
-    display: block;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 5.5rem; line-height: 0.65;
-    color: var(--ksu-gold); margin-bottom: 0.7rem; font-weight: 600;
+    display: block; font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 5.5rem; line-height: 0.65; color: var(--ksu-gold);
+    margin-bottom: 0.7rem; font-weight: 600;
   }
   .standalone-quote-text {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(1.75rem, 2.8vw, 2.55rem);
-    line-height: 1.28; font-weight: 500; font-style: italic;
-    color: var(--ink); letter-spacing: -0.025em;
-    margin-bottom: 1.5rem;
-    padding-left: 1.8rem;
-    border-left: 2px solid var(--ksu-gold);
+    font-size: clamp(1.7rem,2.6vw,2.4rem); line-height: 1.28;
+    font-weight: 500; font-style: italic; color: var(--ink);
+    letter-spacing: -0.025em; margin-bottom: 1.5rem;
+    padding-left: 1.8rem; border-left: 2px solid var(--ksu-gold);
   }
   .standalone-quote-attribution {
     font-family: 'DM Mono', monospace;
@@ -378,37 +282,24 @@
     padding-left: 1.8rem; font-style: normal;
   }
 
-  /* ── GAPS ── */
+  /* ── BREATHING GAPS ── */
   .gap { height: 22vh; position: relative; z-index: 1; }
 
   /* ── HORIZONTAL CARD SECTION ── */
   .hscroll-section {
-    position: relative;
-    z-index: 12;
-    margin-left: -2.2rem;
-    width: 100vw;
-    /* height set by JS */
+    position: relative; z-index: 12;
+    width: 100%;
   }
-
   .hscroll-viewport {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+    position: sticky; top: 0; height: 100vh;
     background: #f9fbfe;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    display: flex; flex-direction: column; overflow: hidden;
   }
-
   .hscroll-header {
     flex-shrink: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 2.4rem 3.5rem 0;
-    border-bottom: 1px solid rgba(0, 38, 100, 0.07);
-    padding-bottom: 1.1rem;
-    margin-bottom: 0;
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 2.4rem var(--margin-l) 1.1rem;
+    border-bottom: 1px solid rgba(0,38,100,0.07);
   }
   .hscroll-kicker {
     font-family: 'DM Mono', monospace;
@@ -422,134 +313,85 @@
     transition: opacity 0.4s ease;
   }
   .hscroll-hint.hidden { opacity: 0; }
-
-  .hscroll-track-wrapper {
-    flex: 1;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-  }
-
+  .hscroll-track-wrapper { flex: 1; overflow: hidden; display: flex; align-items: center; }
   .hscroll-track {
-    display: flex;
-    gap: 2rem;
-    padding: 0 3.5rem;
-    align-items: stretch;
-    will-change: transform;
-    /* no transition — directly driven by scroll */
+    display: flex; gap: 2rem;
+    padding: 0 var(--margin-l);
+    align-items: stretch; will-change: transform;
   }
 
-  /* Base card */
+  /* Cards */
   .h-card {
-    flex: 0 0 auto;
-    border-radius: 3px;
-    height: clamp(320px, 60vh, 520px);
-    position: relative;
-    overflow: hidden;
+    flex: 0 0 auto; border-radius: 3px;
+    height: clamp(300px,56vh,480px);
+    position: relative; overflow: hidden;
   }
-
-  /* Stat card */
   .h-card--stat {
-    width: clamp(260px, 34vw, 460px);
+    width: clamp(240px,32vw,420px);
     background: var(--white);
     border-top: 3px solid var(--ksu-gold);
-    box-shadow: 0 16px 44px rgba(0, 38, 100, 0.07);
-    padding: 2.4rem 2.8rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    box-shadow: 0 16px 44px rgba(0,38,100,0.07);
+    padding: 2.2rem 2.6rem;
+    display: flex; flex-direction: column; justify-content: space-between;
   }
-
   .h-stat-top { display: flex; flex-direction: column; }
-
   .h-stat-number {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(3.2rem, 7vw, 6rem);
-    line-height: 1;
-    letter-spacing: -0.045em;
-    color: var(--ksu-blue);
-    font-weight: 600;
-    display: block;
-    margin-bottom: 0.55rem;
+    font-size: clamp(3rem,6.5vw,5.5rem); line-height: 1;
+    letter-spacing: -0.045em; color: var(--ksu-blue);
+    font-weight: 600; display: block; margin-bottom: 0.55rem;
   }
   .h-stat-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.48rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--mid);
-    display: block;
+    text-transform: uppercase; color: var(--mid); display: block;
   }
   .h-stat-copy {
-    font-size: 0.95rem;
-    line-height: 1.78;
-    color: var(--ink);
-    padding-top: 1.4rem;
-    border-top: 1px solid var(--rule);
+    font-size: 0.95rem; line-height: 1.78; color: var(--ink);
+    padding-top: 1.4rem; border-top: 1px solid var(--rule);
   }
-
-  /* Photo card */
   .h-card--photo {
-    width: clamp(220px, 28vw, 380px);
-    box-shadow: 0 16px 44px rgba(0, 38, 100, 0.09);
-    cursor: zoom-in;
+    width: clamp(210px,26vw,360px);
+    box-shadow: 0 16px 44px rgba(0,38,100,0.09); cursor: zoom-in;
   }
   .h-card--photo .lightbox-trigger {
-    display: block;
-    width: 100%; height: 100%;
-    padding: 0; border: 0;
-    background: transparent;
-    cursor: zoom-in;
+    display: block; width: 100%; height: 100%;
+    padding: 0; border: 0; background: transparent; cursor: zoom-in;
   }
   .h-card--photo img {
-    width: 100%; height: 100%;
-    object-fit: cover; display: block;
-    pointer-events: none;
+    width: 100%; height: 100%; object-fit: cover;
+    display: block; pointer-events: none;
   }
   .h-card--photo figcaption {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
+    position: absolute; bottom: 0; left: 0; right: 0;
     padding: 2rem 1.2rem 1rem;
     background: linear-gradient(to top, rgba(0,26,64,0.72) 0%, transparent 100%);
     font-family: 'DM Mono', monospace;
     font-size: 0.44rem; letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.82);
-    line-height: 1.7;
-    pointer-events: none;
+    text-transform: uppercase; color: rgba(255,255,255,0.82);
+    line-height: 1.7; pointer-events: none;
   }
-
-  /* Progress bar */
   .hscroll-progress {
-    flex-shrink: 0;
-    margin: 1.4rem 3.5rem;
-    height: 1px;
-    background: var(--rule);
+    flex-shrink: 0; margin: 1.4rem var(--margin-l);
+    height: 1px; background: var(--rule);
   }
-  .hscroll-progress-fill {
-    height: 100%;
-    background: var(--ksu-gold);
-    width: 0%;
-  }
+  .hscroll-progress-fill { height: 100%; background: var(--ksu-gold); width: 0%; }
 
   /* ── MENTOR TAIL ── */
   .article-scroll--tail {
-    position: relative;
-    z-index: 10;
-    padding-left: 2.2rem;
-    padding-bottom: 7rem;
+    position: relative; z-index: 10; width: 100%; padding: 0;
   }
 
   /* ── LIGHTBOX ── */
   .lightbox-trigger {
-    appearance: none;
-    border: 0; background: transparent;
+    appearance: none; border: 0; background: transparent;
     display: block; width: 100%; padding: 0; cursor: zoom-in;
   }
   .lightbox-trigger img { pointer-events: none; }
   .lightbox-overlay {
     position: fixed; inset: 0; z-index: 950;
     display: flex; align-items: center; justify-content: center;
-    padding: 2rem;
-    background: rgba(5, 14, 28, 0.86);
+    padding: 2rem; background: rgba(5,14,28,0.86);
     backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
     opacity: 0; pointer-events: none; transition: opacity 0.24s ease;
   }
@@ -570,10 +412,9 @@
     text-transform: uppercase; color: rgba(255,255,255,0.68); line-height: 1.8;
   }
   .lightbox-close {
-    appearance: none;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(255,255,255,0.05);
-    color: #fff; padding: 0.7rem 1rem; border-radius: 999px;
+    appearance: none; border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05); color: #fff;
+    padding: 0.7rem 1rem; border-radius: 999px;
     font-family: 'DM Mono', monospace;
     font-size: 0.52rem; letter-spacing: 0.18em;
     text-transform: uppercase; cursor: pointer; transition: background 0.2s ease;
@@ -582,10 +423,8 @@
 
   /* ── FOOTER ── */
   .article-close {
-    background: var(--ksu-blue);
-    position: relative; z-index: 20;
-    border-top: 3px solid var(--ksu-gold);
-    padding: 4.5rem 4.5rem 4rem;
+    background: var(--ksu-blue); position: relative; z-index: 20;
+    border-top: 3px solid var(--ksu-gold); padding: 4.5rem 4.5rem 4rem;
   }
   .article-close span {
     font-family: 'DM Mono', monospace;
@@ -600,49 +439,33 @@
   }
   .article-tagline {
     font-family: 'Source Serif 4', Georgia, serif;
-    font-size: 0.94rem; line-height: 1.88;
-    color: rgba(255,255,255,0.48);
-    margin-top: 2.2rem;
-    border-top: 1px solid rgba(255,255,255,0.09);
-    padding-top: 2.2rem;
+    font-size: 0.94rem; line-height: 1.88; color: rgba(255,255,255,0.48);
+    margin-top: 2.2rem; border-top: 1px solid rgba(255,255,255,0.09); padding-top: 2.2rem;
   }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    :root { --stage-width: 100%; --content-width: calc(100vw - 2.8rem); }
-    .hand-bg { width: 100%; }
-    .reveal-spacer { height: 22vh; padding-left: 0; }
-    .text-panel, .standalone-quote { width: calc(100% - 2.8rem); }
-    .article-scroll { padding-left: 1.4rem; padding-right: 1.4rem; }
-    .article-scroll--tail { padding-left: 1.4rem; padding-right: 1.4rem; }
-    .hscroll-section { margin-left: 0; width: 100%; }
-    .hscroll-header { padding: 1.6rem 1.4rem 1rem; }
-    .hscroll-track { padding: 0 1.4rem; }
-    .hscroll-progress { margin: 1rem 1.4rem; }
-  }
-
-  @media (max-width: 600px) {
-    .masthead { padding: 1.2rem 1.4rem; }
-    .hero-content { padding: 0 1.4rem 3.5rem; }
-    .reveal-spacer { padding: 0 1.4rem 2.5rem; }
+  @media (max-width: 860px) {
+    :root { --col: calc(100vw - 3rem); --col-wide: calc(100vw - 3rem); --col-quote: calc(100vw - 3rem); --margin-l: 1.5rem; }
     .panel-grid { grid-template-columns: 1fr; gap: 1.8rem; }
-    .standalone-quote-text { font-size: 1.5rem; }
-    .h-card--stat { width: 75vw; }
-    .h-card--photo { width: 62vw; }
     .panel-visual { order: -1; }
     .panel-visual--sticky { position: static; }
     .panel-visual--uncropped img { max-height: none; }
+  }
+  @media (max-width: 600px) {
+    .masthead { padding: 1.2rem 1.4rem; }
+    .hero-content { padding: 0 1.4rem 3.5rem; }
+    .standalone-quote-text { font-size: 1.5rem; }
+    .h-card--stat { width: 75vw; }
+    .h-card--photo { width: 62vw; }
     .lightbox-overlay { padding: 1rem; }
     .lightbox-meta { flex-direction: column; align-items: flex-start; }
     .article-close { padding: 2.5rem 1.4rem; }
     .byline { gap: 1.2rem; flex-wrap: wrap; }
   }
-
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .scroll-cue, .text-panel, .standalone-quote,
     .hand-poster, .hero-parallax-img, .masthead { transition: none; animation: none; }
-    .hscroll-track { will-change: auto; }
   }
 </style>
 </head>
@@ -685,13 +508,14 @@
 
 <div class="scroll-zone" id="scrollZone">
 
+  <!-- Hand: sticky full-viewport, positioned low by JS canvas drawing -->
   <div class="hand-bg" id="handBg">
     <img class="hand-poster is-visible" id="handPoster"
          src="3D-printed_prosthetic_robotic_202604231257_00000.jpg"
          alt="Animated sequence of a 3D-printed prosthetic hand">
   </div>
 
-  <!-- Main article text -->
+  <!-- Article text — floats above the hand -->
   <div class="article-scroll">
 
     <div class="reveal-spacer">
@@ -713,7 +537,7 @@
 
     <div class="gap" style="height: 24vh;"></div>
 
-    <!-- Science Center panel -->
+    <!-- Science Center -->
     <div class="text-panel text-panel--split">
       <div class="panel-grid">
         <div class="panel-copy">
@@ -742,7 +566,7 @@
       <cite class="standalone-quote-attribution">Yariselle Andujar</cite>
     </blockquote>
 
-    <!-- Ecuador panel -->
+    <!-- Ecuador -->
     <div class="text-panel text-panel--split">
       <div class="panel-grid">
         <div class="panel-copy">
@@ -767,28 +591,24 @@
 
     <div class="gap" style="height: 12vh;"></div>
 
-    <!-- ── HORIZONTAL CARD SECTION ── -->
+    <!-- Horizontal card carousel -->
     <div class="hscroll-section" id="hscrollSection">
       <div class="hscroll-viewport">
-
         <div class="hscroll-header">
           <span class="hscroll-kicker">By the Numbers &nbsp;·&nbsp; From the Field</span>
           <span class="hscroll-hint" id="hscrollHint">↓ Keep scrolling</span>
         </div>
-
         <div class="hscroll-track-wrapper">
           <div class="hscroll-track" id="hscrollTrack">
 
-            <!-- Stat 1 -->
             <div class="h-card h-card--stat">
               <div class="h-stat-top">
                 <span class="h-stat-number">$55–60</span>
                 <span class="h-stat-label">Estimated 3D-printed cost</span>
               </div>
-              <p class="h-stat-copy">The team says the same basic device can be produced for a fraction of the cost of a traditional pediatric prosthetic.</p>
+              <p class="h-stat-copy">The same basic device can be produced for a fraction of the cost of a traditional pediatric prosthetic.</p>
             </div>
 
-            <!-- Stat 2 -->
             <div class="h-card h-card--stat">
               <div class="h-stat-top">
                 <span class="h-stat-number">$5K–10K</span>
@@ -797,7 +617,6 @@
               <p class="h-stat-copy">That price gap matters most for children, who outgrow devices quickly and need replacements as they develop.</p>
             </div>
 
-            <!-- Stat 3 -->
             <div class="h-card h-card--stat">
               <div class="h-stat-top">
                 <span class="h-stat-number">50+</span>
@@ -806,7 +625,6 @@
               <p class="h-stat-copy">What began as a robotics insight has become an ongoing humanitarian effort with real patients and repeat fittings.</p>
             </div>
 
-            <!-- Photo 1 -->
             <figure class="h-card h-card--photo">
               <button class="lightbox-trigger" type="button"
                 data-lightbox-src="Yari/fromYari/20250604_160602.jpg"
@@ -817,7 +635,6 @@
               <figcaption>Ecuador, Summer 2025</figcaption>
             </figure>
 
-            <!-- Photo 2 -->
             <figure class="h-card h-card--photo">
               <button class="lightbox-trigger" type="button"
                 data-lightbox-src="Yari/fromYari/20250726_072430.jpg"
@@ -828,7 +645,6 @@
               <figcaption>On the ground, Ibarra</figcaption>
             </figure>
 
-            <!-- Photo 3 -->
             <figure class="h-card h-card--photo">
               <button class="lightbox-trigger" type="button"
                 data-lightbox-src="Yari/fromYari/Screenshot_20240805_210843_Instagram[93].jpg"
@@ -841,22 +657,17 @@
 
           </div>
         </div>
-
         <div class="hscroll-progress">
           <div class="hscroll-progress-fill" id="hscrollProgressFill"></div>
         </div>
-
       </div>
     </div>
-    <!-- /hscroll-section -->
 
   </div><!-- /article-scroll -->
 
-  <!-- Mentor section — below the hscroll zone -->
+  <!-- Mentor closing section -->
   <div class="article-scroll article-scroll--tail">
-
     <div class="gap" style="height: 18vh;"></div>
-
     <div class="text-panel">
       <div class="panel-copy">
         <div class="article-text">
@@ -866,10 +677,8 @@
         </div>
       </div>
     </div>
-
     <div class="gap" style="height: 16vh;"></div>
-
-  </div><!-- /article-scroll--tail -->
+  </div>
 
 </div><!-- /scroll-zone -->
 
@@ -896,7 +705,7 @@
 
 <script>
 const FRAMES = Array.from({length: 192}, (_, i) =>
-  `3D-printed_prosthetic_robotic_202604231257_${String(i).padStart(5, '0')}.jpg`
+  `3D-printed_prosthetic_robotic_202604231257_${String(i).padStart(5,'0')}.jpg`
 );
 
 const bg          = document.getElementById('handBg');
@@ -906,130 +715,105 @@ const loader      = document.getElementById('loader');
 const progressBar = document.getElementById('progress');
 const scrollCue   = document.querySelector('.scroll-cue');
 const scrollZone  = document.getElementById('scrollZone');
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const reducedMotion = prefersReducedMotion.matches;
-const saveData = Boolean(navigator.connection && navigator.connection.saveData);
-const useStaticExperience = reducedMotion || saveData;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const saveData    = Boolean(navigator.connection && navigator.connection.saveData);
+const useStatic   = reducedMotion || saveData;
 
-// ── Canvas for frame animation ──
+// ── Canvas ──
 const canvas = document.createElement('canvas');
 canvas.setAttribute('aria-hidden', 'true');
 canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;';
 bg.appendChild(canvas);
-
 const dpr = Math.min(window.devicePixelRatio || 1, 2);
+const ctx = canvas.getContext('2d');
 
 function resizeCanvas() {
   canvas.width  = bg.offsetWidth  * dpr;
   canvas.height = bg.offsetHeight * dpr;
 }
 resizeCanvas();
+window.addEventListener('resize', resizeCanvas, { passive: true });
 
-const ctx = canvas.getContext('2d');
-let currentFrame = -1;
-let rafPending = false;
-let pendingFrame = 0;
-let loadedFrames = 0;
-let activeLoader = 0;
-let completedLoader = 0;
-const MAX_CONCURRENT_LOADS = 8;
-const images = new Array(FRAMES.length);
-
+// ── Draw: hand scaled to 78% of viewport height, bottom-center anchored ──
 function drawFrame(img) {
   const cw = canvas.width, ch = canvas.height;
   const iw = img.naturalWidth, ih = img.naturalHeight;
-  const scale = Math.max(cw / iw, ch / ih);
+  // Contain to 78% of viewport height — keeps full hand visible, sitting at the bottom
+  const scale = (ch * 0.78) / ih;
   const dw = iw * scale, dh = ih * scale;
-  const dx = cw - dw * 0.78;
-  const dy = (ch - dh) * 0.42;
+  const dx = (cw - dw) * 0.5;  // center horizontally
+  const dy = ch - dh;           // bottom-align
   ctx.clearRect(0, 0, cw, ch);
   ctx.drawImage(img, dx, dy, dw, dh);
 }
 
+// ── Frame loading ──
+let currentFrame = -1, rafPending = false, pendingFrame = 0;
+let loadedFrames = 0, activeLoader = 0, completedLoader = 0;
+const MAX_CONCURRENT = 8;
+const images = new Array(FRAMES.length);
+
 function updateLoader() {
-  const pct = Math.max(6, Math.min(100, Math.round((loadedFrames / FRAMES.length) * 100)));
-  loaderFill.style.width = pct + '%';
+  loaderFill.style.width = Math.max(6, Math.min(100, Math.round(loadedFrames / FRAMES.length * 100))) + '%';
 }
+function hideLoader() { loader.classList.add('done'); }
 
 function setFrame(idx) {
   if (idx === currentFrame) return;
   currentFrame = idx;
-  ensureFrame(idx);
-  warmFrames(idx, 5);
+  ensureFrame(idx); warmFrames(idx, 5);
   if (images[idx]?.complete && images[idx].naturalWidth) {
-    drawFrame(images[idx]);
-    handPoster.classList.remove('is-visible');
-  } else {
-    handPoster.classList.add('is-visible');
-  }
+    drawFrame(images[idx]); handPoster.classList.remove('is-visible');
+  } else { handPoster.classList.add('is-visible'); }
 }
 
-function ensureFrame(index) {
-  if (index < 0 || index >= FRAMES.length || images[index]) return;
-  const img = new Image();
-  images[index] = img;
+function ensureFrame(i) {
+  if (i < 0 || i >= FRAMES.length || images[i]) return;
+  const img = new Image(); images[i] = img;
   img.onload = () => {
-    loadedFrames++;
-    updateLoader();
-    if (index === 0) hideLoader();
-    if (index === currentFrame) { drawFrame(img); handPoster.classList.remove('is-visible'); }
+    loadedFrames++; updateLoader();
+    if (i === 0) hideLoader();
+    if (i === currentFrame) { drawFrame(img); handPoster.classList.remove('is-visible'); }
   };
-  img.onerror = () => { loadedFrames++; updateLoader(); if (index === 0) hideLoader(); };
-  img.src = FRAMES[index];
+  img.onerror = () => { loadedFrames++; updateLoader(); if (i === 0) hideLoader(); };
+  img.src = FRAMES[i];
 }
 
-function queueLoad(index) {
-  if (index < 0 || index >= FRAMES.length || images[index]) return;
-  if (activeLoader >= MAX_CONCURRENT_LOADS) return;
-  activeLoader++;
-  ensureFrame(index);
-  const img = images[index];
-  const settle = () => {
-    img.removeEventListener('load', settle);
-    img.removeEventListener('error', settle);
-    activeLoader--;
-    runLoaderQueue();
-  };
-  if (img.complete) { activeLoader--; runLoaderQueue(); return; }
-  img.addEventListener('load', settle, { once: true });
-  img.addEventListener('error', settle, { once: true });
+function queueLoad(i) {
+  if (i < 0 || i >= FRAMES.length || images[i] || activeLoader >= MAX_CONCURRENT) return;
+  activeLoader++; ensureFrame(i);
+  const img = images[i];
+  if (img.complete) { activeLoader--; runQueue(); return; }
+  const settle = () => { img.removeEventListener('load',settle); img.removeEventListener('error',settle); activeLoader--; runQueue(); };
+  img.addEventListener('load', settle, {once:true});
+  img.addEventListener('error', settle, {once:true});
 }
 
-function runLoaderQueue() {
-  while (activeLoader < MAX_CONCURRENT_LOADS && completedLoader < FRAMES.length) {
-    queueLoad(loadOrder[completedLoader++]);
-  }
+function runQueue() {
+  while (activeLoader < MAX_CONCURRENT && completedLoader < FRAMES.length) queueLoad(loadOrder[completedLoader++]);
 }
+function warmFrames(c, r) { for (let o=1;o<=r;o++) { queueLoad(c+o); queueLoad(c-o); } }
 
-function warmFrames(center, radius) {
-  for (let i = 1; i <= radius; i++) { queueLoad(center + i); queueLoad(center - i); }
-}
+const loadOrder = Array.from({length:FRAMES.length},(_,i)=>i)
+  .sort((a,b) => a===0?-1:b===0?1:a-b);
 
-function hideLoader() { loader.classList.add('done'); }
-
-// ── Horizontal card scroll ──
+// ── Horizontal scroll section ──
 const hscrollSection = document.getElementById('hscrollSection');
 const hscrollTrack   = document.getElementById('hscrollTrack');
 const hscrollFill    = document.getElementById('hscrollProgressFill');
 const hscrollHint    = document.getElementById('hscrollHint');
-let hscrollTranslate = 0;
-let hscrollSectionTop = 0;
+let hscrollTranslate = 0, hscrollSectionTop = 0;
 
 function calcHScroll() {
-  // Total horizontal travel = track content width minus viewport width (plus right padding visual buffer)
-  const trackScrollWidth = hscrollTrack.scrollWidth;
-  const rightPad = parseFloat(getComputedStyle(hscrollTrack).paddingLeft) || 56;
-  hscrollTranslate = Math.max(0, trackScrollWidth - window.innerWidth + rightPad);
-  // Section height = one viewport (for the sticky panel) + scroll distance
+  const pad = parseFloat(getComputedStyle(hscrollTrack).paddingLeft) || 80;
+  hscrollTranslate = Math.max(0, hscrollTrack.scrollWidth - window.innerWidth + pad);
   hscrollSection.style.height = `calc(100vh + ${hscrollTranslate}px)`;
-  // Cache absolute top position (recalculated after height is set)
   hscrollSectionTop = hscrollSection.getBoundingClientRect().top + window.scrollY;
 }
 
 function updateHScroll() {
   if (hscrollTranslate <= 0) return;
-  const scrolled = window.scrollY - hscrollSectionTop;
-  const progress = Math.max(0, Math.min(1, scrolled / hscrollTranslate));
+  const progress = Math.max(0, Math.min(1, (window.scrollY - hscrollSectionTop) / hscrollTranslate));
   hscrollTrack.style.transform = `translateX(${-progress * hscrollTranslate}px)`;
   hscrollFill.style.width = (progress * 100) + '%';
   if (progress > 0.04) hscrollHint.classList.add('hidden');
@@ -1045,20 +829,19 @@ function onScroll() {
   const pageH = document.body.scrollHeight - window.innerHeight;
   progressBar.style.width = (window.scrollY / pageH * 100) + '%';
 
-  const n = FRAMES.length;
-  const ppLen = (n - 1) * 2;
+  const n = FRAMES.length, ppLen = (n-1)*2;
   const ppIdx = Math.round(curvedRatio * ppLen);
-  const frame = ppIdx <= n - 1 ? ppIdx : ppLen - ppIdx;
-  pendingFrame = Math.max(0, Math.min(n - 1, frame));
+  const frame = ppIdx <= n-1 ? ppIdx : ppLen - ppIdx;
+  pendingFrame = Math.max(0, Math.min(n-1, frame));
 
   if (!rafPending) {
     rafPending = true;
     requestAnimationFrame(() => {
-      if (!useStaticExperience) {
+      if (!useStatic) {
         setFrame(pendingFrame);
-        bg.style.transform = `scale(${1 + curvedRatio * 0.03})`;
+        bg.style.transform = `scale(${1 + curvedRatio * 0.025})`;
       }
-      if (window.scrollY > 200) scrollCue.classList.add('hidden');
+      if (window.scrollY > 180) scrollCue.classList.add('hidden');
       else scrollCue.classList.remove('hidden');
       updateHScroll();
       rafPending = false;
@@ -1066,70 +849,60 @@ function onScroll() {
   }
 }
 
-const loadOrder = Array.from({length: FRAMES.length}, (_, i) => i)
-  .sort((a, b) => { if (a === 0) return -1; if (b === 0) return 1; return a - b; });
-
-function initializeInteractiveFrames() { queueLoad(0); warmFrames(0, 6); runLoaderQueue(); }
-function initializeStaticExperience() { handPoster.classList.add('is-visible'); hideLoader(); }
-
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', () => { resizeCanvas(); calcHScroll(); }, { passive: true });
 onScroll();
 
-if (useStaticExperience) initializeStaticExperience();
-else initializeInteractiveFrames();
+if (useStatic) { handPoster.classList.add('is-visible'); hideLoader(); }
+else { queueLoad(0); warmFrames(0,6); runQueue(); }
 
-// Text panel + quote fade-in
-const panelObserver = new IntersectionObserver((entries) => {
+// Fade-in observer
+const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
-document.querySelectorAll('.text-panel, .standalone-quote').forEach(p => panelObserver.observe(p));
+document.querySelectorAll('.text-panel, .standalone-quote').forEach(p => obs.observe(p));
 
 // ── Hero parallax ──
 const heroParallaxImg = document.getElementById('heroParallaxImg');
 const masthead        = document.querySelector('.masthead');
 const heroWrap        = document.getElementById('heroWrap');
-const lightboxOverlay = document.getElementById('lightboxOverlay');
-const lightboxImage   = document.getElementById('lightboxImage');
-const lightboxCaption = document.getElementById('lightboxCaption');
-const lightboxClose   = document.getElementById('lightboxClose');
 
 function onHeroScroll() {
-  const scrollY = window.scrollY;
-  if (heroParallaxImg) heroParallaxImg.style.transform = `translateY(${scrollY * 0.4}px)`;
-  if (scrollY > heroWrap.offsetHeight - 80) masthead.classList.add('scrolled');
+  const y = window.scrollY;
+  if (heroParallaxImg) heroParallaxImg.style.transform = `translateY(${y * 0.4}px)`;
+  if (y > heroWrap.offsetHeight - 80) masthead.classList.add('scrolled');
   else masthead.classList.remove('scrolled');
 }
 window.addEventListener('scroll', onHeroScroll, { passive: true });
 onHeroScroll();
 
 // ── Lightbox ──
-document.querySelectorAll('.lightbox-trigger').forEach((trigger) => {
-  trigger.addEventListener('click', () => {
-    lightboxImage.src = trigger.dataset.lightboxSrc;
-    lightboxImage.alt = trigger.dataset.lightboxAlt || '';
-    lightboxCaption.textContent = trigger.dataset.lightboxCaption || '';
+const lightboxOverlay = document.getElementById('lightboxOverlay');
+const lightboxImage   = document.getElementById('lightboxImage');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxClose   = document.getElementById('lightboxClose');
+
+document.querySelectorAll('.lightbox-trigger').forEach(t => {
+  t.addEventListener('click', () => {
+    lightboxImage.src = t.dataset.lightboxSrc;
+    lightboxImage.alt = t.dataset.lightboxAlt || '';
+    lightboxCaption.textContent = t.dataset.lightboxCaption || '';
     lightboxOverlay.classList.add('is-open');
-    lightboxOverlay.setAttribute('aria-hidden', 'false');
+    lightboxOverlay.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';
   });
 });
 
 function closeLightbox() {
   lightboxOverlay.classList.remove('is-open');
-  lightboxOverlay.setAttribute('aria-hidden', 'true');
-  lightboxImage.src = '';
-  document.body.style.overflow = '';
+  lightboxOverlay.setAttribute('aria-hidden','true');
+  lightboxImage.src = ''; document.body.style.overflow = '';
 }
-
 lightboxClose.addEventListener('click', closeLightbox);
-lightboxOverlay.addEventListener('click', (e) => { if (e.target === lightboxOverlay) closeLightbox(); });
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && lightboxOverlay.classList.contains('is-open')) closeLightbox();
-});
+lightboxOverlay.addEventListener('click', e => { if (e.target === lightboxOverlay) closeLightbox(); });
+window.addEventListener('keydown', e => { if (e.key==='Escape' && lightboxOverlay.classList.contains('is-open')) closeLightbox(); });
 
-// Init hscroll after layout is painted
-requestAnimationFrame(() => { requestAnimationFrame(calcHScroll); });
+requestAnimationFrame(() => requestAnimationFrame(calcHScroll));
 </script>
 </body>
 </html>

@@ -703,9 +703,7 @@
 </div>
 
 <script>
-const FRAMES = Array.from({length: 192}, (_, i) =>
-  `3D-printed_prosthetic_robotic_202604231257_${String(i).padStart(5,'0')}.jpg`
-);
+const FRAMES = Array.from({length: 192}, (_, i) => `Frame ${i}.jpg`);
 
 const bg          = document.getElementById('handBg');
 const handPoster  = document.getElementById('handPoster');
@@ -737,11 +735,11 @@ window.addEventListener('resize', resizeCanvas, { passive: true });
 function drawFrame(img) {
   const cw = canvas.width, ch = canvas.height;
   const iw = img.naturalWidth, ih = img.naturalHeight;
-  // Scale by height only so dw < cw, then hard right-align
-  const scale = (ch * 0.96) / ih;
+  const scale = Math.max(cw / iw, ch / ih);
   const dw = iw * scale, dh = ih * scale;
-  const dx = cw - dw;             // right edge of hand = right edge of canvas
-  const dy = (ch - dh) * 0.88;   // bottom-shifted
+  // Landscape 1920×1080 frames: dw > cw. Shift left so only right 60% of image shows.
+  const dx = cw - dw * 0.62;
+  const dy = (ch - dh) * 0.88;
   ctx.clearRect(0, 0, cw, ch);
   ctx.drawImage(img, dx, dy, dw, dh);
 }

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Cleveland to Ecuador — Kent State Magazine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #b89800;
+  --gold-rule: #d4b000;
+  --ink: #1a1814;
+  --body: #2e2b26;
+  --muted: #888078;
+  --rule: #e0dcd4;
+  --bg: #faf9f6;
+  --col: 660px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--body);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PROGRESS ── */
+#progress {
+  position: fixed; top: 0; left: 0;
+  width: 0%; height: 2px;
+  background: var(--gold); z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  height: 50px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(250,249,246,0.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+nav img { height: 20px; opacity: 0.75; }
+.nav-right {
+  display: flex; align-items: center; gap: 28px;
+}
+.nav-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  height: 100vh; min-height: 600px;
+  overflow: hidden;
+  background: #0d0c0a;
+}
+.hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 18%;
+  opacity: 0.62;
+}
+.hero-content {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding-bottom: 80px;
+  text-align: center;
+}
+.hero-kicker {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-rule);
+  margin-bottom: 22px;
+}
+.hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(56px, 8vw, 108px);
+  font-weight: 900; line-height: 0.95;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.hero-subtitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 400; font-style: italic;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 32px;
+}
+.hero-rule {
+  width: 40px; height: 1px;
+  background: var(--gold-rule);
+  margin: 0 auto 24px;
+}
+.hero-deck {
+  font-size: 16px; font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  max-width: 440px; line-height: 1.6;
+  margin-bottom: 20px;
+}
+.hero-byline {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.35);
+}
+.scroll-arrow {
+  position: absolute; bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px; color: rgba(255,255,255,0.25);
+  animation: bob 2s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ── CHAPTER DIVIDER ── */
+.chapter {
+  display: flex; align-items: center;
+  padding: 64px 0 32px;
+  max-width: calc(var(--col) + 120px);
+  margin: 0 auto;
+  padding-left: 60px; padding-right: 60px;
+  gap: 20px;
+}
+.chapter-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.chapter-rule {
+  flex: 1; height: 1px; background: var(--rule);
+}
+.chapter-title {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); flex-shrink: 0;
+}
+
+/* ── BODY COLUMN ── */
+.body-col {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 60px;
+}
+p { margin-bottom: 1.55em; }
+p:last-child { margin-bottom: 0; }
+@media (max-width: 780px) {
+  .body-col { padding: 0 24px; }
+  .chapter { padding-left: 24px; padding-right: 24px; }
+}
+
+/* ── INLINE PHOTO + SIDEBAR CAPTION ── */
+.photo-aside {
+  max-width: calc(var(--col) + 220px);
+  margin: 52px auto;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 28px;
+  align-items: start;
+}
+.photo-aside img {
+  width: 100%; display: block;
+  max-height: 520px; object-fit: cover;
+}
+.photo-aside-caption {
+  padding-top: 8px;
+}
+.photo-aside-caption .cap-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: block;
+}
+.photo-aside-caption p {
+  font-size: 12px; line-height: 1.6;
+  color: var(--muted); font-style: italic;
+  margin-bottom: 0;
+}
+
+/* ── FULL BLEED PHOTO ── */
+.full-bleed {
+  width: 100%; display: block;
+  max-height: 62vh; object-fit: cover;
+  margin: 0;
+}
+.full-bleed-caption {
+  text-align: center;
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; letter-spacing: 0.06em;
+  color: var(--muted); font-style: italic;
+  padding: 14px 0 0;
+  max-width: var(--col);
+  margin: 0 auto;
+}
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  text-align: center;
+  padding: 52px 60px;
+  max-width: calc(var(--col) + 80px);
+  margin: 0 auto;
+}
+.pull-quote::before {
+  content: '';
+  display: block;
+  width: 32px; height: 1px;
+  background: var(--gold-rule);
+  margin: 0 auto 28px;
+}
+.pull-quote blockquote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 400; font-style: italic;
+  line-height: 1.5; color: var(--ink);
+  text-wrap: pretty;
+  margin-bottom: 22px;
+}
+.pull-quote::after {
+  content: '';
+  display: block;
+  width: 32px; height: 1px;
+  background: var(--gold-rule);
+  margin: 22px auto 0;
+}
+.pull-quote cite {
+  display: block;
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); font-style: normal;
+  margin-top: 18px;
+}
+
+/* ── ANIMATION SECTION ── */
+.anim-section { position: relative; height: 380vh; }
+.anim-sticky {
+  position: sticky; top: 0;
+  height: 100vh; overflow: hidden; background: #000;
+}
+.anim-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; display: block;
+}
+.anim-text {
+  position: absolute;
+  bottom: 72px; left: 0; right: 0;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(10px);
+}
+.anim-text.visible { opacity: 1; transform: translateY(0); }
+.anim-text-kicker {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px;
+}
+.anim-text-body {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-style: italic; color: #fff;
+  text-shadow: 0 1px 16px rgba(0,0,0,0.9);
+  max-width: 520px; margin: 0 auto;
+  line-height: 1.45; text-wrap: pretty;
+}
+.anim-label {
+  position: absolute; top: 36px; right: 48px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(200,168,0,0.45);
+}
+.anim-hint {
+  position: absolute; bottom: 36px; left: 0; right: 0;
+  text-align: center;
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.2);
+  transition: opacity 0.6s;
+}
+
+/* ── STATS ── */
+.stats-section {
+  padding: 80px 60px;
+  max-width: calc(var(--col) + 120px);
+  margin: 0 auto;
+}
+.stats-row {
+  display: flex; align-items: baseline;
+  gap: 0;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.stats-row:first-child { border-top: 1px solid var(--rule); }
+.stat-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 44px; font-weight: 700;
+  color: var(--gold); line-height: 1;
+  min-width: 180px; letter-spacing: -0.02em;
+}
+.stat-body { flex: 1; }
+.stat-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink); margin-bottom: 4px;
+}
+.stat-desc {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.55; font-family: 'Source Serif 4', serif;
+}
+
+/* ── PHOTO COLLAGE ── */
+.photo-collage {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: 280px 280px;
+  gap: 3px;
+}
+.photo-collage figure { position: relative; overflow: hidden; }
+.photo-collage figure img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.6s ease;
+}
+.photo-collage figure:hover img { transform: scale(1.04); }
+.photo-collage figure.span2 { grid-row: span 2; }
+.photo-collage figcaption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+  padding: 32px 16px 14px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.7); font-style: italic;
+}
+
+/* ── CLOSING ── */
+.closing {
+  padding: 100px 60px;
+  text-align: center;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-top: 80px;
+}
+.closing blockquote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(24px, 3.5vw, 42px);
+  font-style: italic; font-weight: 400;
+  color: var(--ink); max-width: 680px;
+  margin: 0 auto 28px;
+  line-height: 1.4; text-wrap: pretty;
+}
+.closing cite {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gold); font-style: normal;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 44px 60px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 24px;
+  background: var(--bg);
+}
+footer img { height: 18px; opacity: 0.45; }
+.footer-meta {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #bbb;
+  text-align: right; line-height: 1.9;
+}
+
+.spacer { height: 64px; }
+.spacer-sm { height: 36px; }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav>
+  <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/KSM-logo-horizontal-invert.svg"
+    alt="Kent State Magazine" style="filter:invert(1);">
+  <div class="nav-right">
+    <span class="nav-label">Field Notes</span>
+    <span class="nav-label" style="color:var(--rule);">·</span>
+    <span class="nav-label">Spring 2026</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-img"
+    src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00060.jpg"
+    alt="Yariselle Andujar">
+  <div class="hero-content">
+    <div class="hero-kicker">College of Aeronautics &amp; Engineering</div>
+    <div class="hero-title">From Cleveland</div>
+    <div class="hero-subtitle">to Ecuador</div>
+    <div class="hero-rule"></div>
+    <p class="hero-deck">One Flash's mission to change lives, one limb at a time.</p>
+    <div class="hero-byline">Photography by Rami Daud &nbsp;·&nbsp; Spring 2026</div>
+  </div>
+  <div class="scroll-arrow">↓</div>
+</section>
+
+<!-- CHAPTER 01 -->
+<div class="chapter">
+  <span class="chapter-num">01</span>
+  <div class="chapter-rule"></div>
+  <span class="chapter-title">A Classroom Spark</span>
+</div>
+
+<div class="body-col">
+  <p>On a warm spring evening in her Centennial Court residence hall room, Yariselle Andujar describes the moment everything clicked. She was a high school student in an AVID class in Cleveland when her teacher played a video about college — and something lit up inside her. Not just about higher education, but about what was possible.</p>
+  <p>That instinct for possibility has defined her life ever since. Now 19 and a freshman in Kent State's College of Aeronautics and Engineering — pursuing industrial engineering technology with plans to transition into mechatronics — Andujar is already a mentor, an innovator and a humanitarian.</p>
+  <p>She is also one of the founding members of a student-led program that has delivered 3D-printed prosthetic limbs to more than 50 children in Ecuador.</p>
+</div>
+
+<!-- INLINE PHOTO WITH SIDEBAR CAPTION -->
+<div class="photo-aside">
+  <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00079.jpg"
+    alt="Yariselle examining the prosthetic hand">
+  <div class="photo-aside-caption">
+    <span class="cap-label">Cleveland, 2024</span>
+    <p>Examining iteration 20-something. The design has been refined continuously since the program's founding.</p>
+  </div>
+</div>
+
+<div class="body-col">
+  <p>The project started in 2022 at the Great Lakes Science Center in Cleveland, where Andujar and fellow student Daniela Valentina Moreno Machuca were part of a First Robotics team — the Argonauts, Team 8222. Working under robotics leader Timothy Hatfield, the two students noticed something remarkable: the same 3D-printing technology they were using to build affordable robot parts could be used to create prosthetic limbs.</p>
+  <p>The math was striking. A commercially manufactured prosthetic hand or arm for a child can cost between $5,000 and $10,000 — and children outgrow them. With 3D printing, the same device could be produced for as little as $55 to $60.</p>
+</div>
+
+<!-- PULL QUOTE -->
+<div class="pull-quote">
+  <blockquote>"Seeing the small things that they ask for — like being able to eat or wipe themselves — we don't understand how important that is for someone missing that in their life."</blockquote>
+  <cite>Yariselle Andujar</cite>
+</div>
+
+<!-- CHAPTER 02: THE HAND -->
+<div class="chapter">
+  <span class="chapter-num">02</span>
+  <div class="chapter-rule"></div>
+  <span class="chapter-title">The Hand</span>
+</div>
+
+<!-- ANIMATION -->
+<section class="anim-section" id="anim-section">
+  <div class="anim-sticky" id="anim-sticky">
+    <canvas class="anim-canvas" id="anim-canvas"></canvas>
+
+    <div class="anim-text" id="anim-t1">
+      <div class="anim-text-kicker">3D-Printed Prosthetics</div>
+      <div class="anim-text-body">The same technology used to build robot parts — repurposed to give children movement.</div>
+    </div>
+    <div class="anim-text" id="anim-t2">
+      <div class="anim-text-kicker">$55 to $60</div>
+      <div class="anim-text-body">A fraction of the $5,000–$10,000 cost of a commercially manufactured prosthetic.</div>
+    </div>
+    <div class="anim-text" id="anim-t3">
+      <div class="anim-text-kicker">50+ Children Served</div>
+      <div class="anim-text-body">Fitted with prosthetic hands and arms at a local hospital in Ecuador — and counting.</div>
+    </div>
+
+    <div class="anim-hint" id="anim-hint">Scroll to animate</div>
+    <div class="anim-label">Argonauts Team 8222 &nbsp;·&nbsp; Great Lakes Science Center</div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="chapter">
+  <span class="chapter-num">03</span>
+  <div class="chapter-rule"></div>
+  <span class="chapter-title">By the Numbers</span>
+</div>
+
+<div class="stats-section">
+  <div class="stats-row">
+    <div class="stat-num">$55–60</div>
+    <div class="stat-body">
+      <div class="stat-label">3D-Printed Cost</div>
+      <div class="stat-desc">The same basic device can be produced for a fraction of the cost of a traditional pediatric prosthetic.</div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-num">$5K–10K</div>
+    <div class="stat-body">
+      <div class="stat-label">Typical Commercial Range</div>
+      <div class="stat-desc">That price gap matters most for children, who outgrow devices quickly and need replacements as they develop.</div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-num">50+</div>
+    <div class="stat-body">
+      <div class="stat-label">Children Served in Ecuador</div>
+      <div class="stat-desc">What began as a robotics insight has become an ongoing humanitarian effort with real patients and repeat fittings.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAPTER 04 -->
+<div class="chapter">
+  <span class="chapter-num">04</span>
+  <div class="chapter-rule"></div>
+  <span class="chapter-title">Ecuador, Summer 2025</span>
+</div>
+
+<div class="body-col">
+  <p>What began as a high school robotics idea quickly evolved into a full humanitarian program in partnership with Med Access International. In the summer of 2025, Andujar and five fellow Cleveland Metropolitan School District students traveled to Ecuador for nearly two weeks, fitting 20 children with prosthetic hands and arms at a local hospital — assisting in triage and helping youth shadow physicians during surgeries.</p>
+  <p>The group also trained students and teachers at a technical college on 3D printing and met with the Ministry of Health for the Republic of Ecuador to advocate for STEM education.</p>
+</div>
+
+<div class="spacer-sm"></div>
+
+<!-- PHOTO COLLAGE -->
+<div class="photo-collage">
+  <figure class="span2">
+    <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/fromYari/IMG-20250803-WA0191.jpg" alt="Team in Ecuador">
+    <figcaption>The team in Ibarra, Ecuador — Summer 2025</figcaption>
+  </figure>
+  <figure>
+    <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/fromYari/20250604_160602.jpg" alt="Ecuador, Summer 2025">
+    <figcaption>Ecuador, June 2025</figcaption>
+  </figure>
+  <figure>
+    <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/fromYari/IMG_6181.jpg" alt="Fitting session">
+    <figcaption>A fitting session with a young patient</figcaption>
+  </figure>
+</div>
+
+<!-- CHAPTER 05 -->
+<div class="chapter">
+  <span class="chapter-num">05</span>
+  <div class="chapter-rule"></div>
+  <span class="chapter-title">What's Next</span>
+</div>
+
+<div class="body-col">
+  <p>The team is now at work on a new model for a returning patient named Samantha — a young woman they first served on a previous trip. The newest design features a Japanese-style arm fitted with a custom sleeve socket, refined after the previous model did not perform as expected.</p>
+  <p>Andujar has since transitioned from student participant to program mentor. She recently helped lead an interview process to select six high school students for the program's upcoming trip to Ibarra, Ecuador, planned for June 22 through July 2, 2026.</p>
+  <p>As a freshman focused on establishing her academic footing, she has spent this first year getting settled — visiting the university's combat robotics team, working briefly in a campus VR lab. She recently learned for the first time that the College of Aeronautics and Engineering has a design lab equipped with 3D printers that students may be able to access.</p>
+</div>
+
+<!-- FULL BLEED CLOSING PHOTO -->
+<div class="spacer"></div>
+<img class="full-bleed"
+  src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00098.jpg"
+  alt="Close-up of hands assembling the prosthetic">
+<p class="full-bleed-caption">The work in her hands — KSU Engineering Lab, Spring 2026</p>
+
+<!-- CLOSING QUOTE -->
+<div class="closing">
+  <blockquote>"I think it gives me hope for the world. I just fell in love with the original concept that we created, and then it became something 10 times better."</blockquote>
+  <cite>Yariselle Andujar &nbsp;·&nbsp; Freshman, College of Aeronautics &amp; Engineering</cite>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/KSM-logo-horizontal-invert.svg"
+    alt="Kent State Magazine" style="filter:invert(1) opacity(0.45);">
+  <div class="footer-meta">
+    Field Notes &nbsp;·&nbsp; Research &amp; Impact<br>
+    Photography · Rami Daud &nbsp;·&nbsp; Spring 2026
+  </div>
+</footer>
+
+<script>
+// ── PROGRESS BAR ──
+const bar = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const max = document.body.scrollHeight - window.innerHeight;
+  bar.style.width = (window.scrollY / max * 100) + '%';
+}, { passive: true });
+
+// ── SCROLL-SCRUBBED ANIMATION ──
+const FRAMES = 48;
+const framePaths = Array.from({length: FRAMES}, (_, i) =>
+  `3D-printed_prosthetic_robotic_202604231257_${String(i * 4).padStart(5,'0')}.jpg`
+);
+
+const canvas = document.getElementById('anim-canvas');
+const ctx = canvas.getContext('2d');
+const hint = document.getElementById('anim-hint');
+const section = document.getElementById('anim-section');
+const textPanels = [
+  { el: document.getElementById('anim-t1'), from: 0.00, to: 0.38 },
+  { el: document.getElementById('anim-t2'), from: 0.35, to: 0.68 },
+  { el: document.getElementById('anim-t3'), from: 0.65, to: 1.00 },
+];
+
+const images = [];
+let currentFrame = 0;
+
+function setCanvasSize() {
+  const s = document.getElementById('anim-sticky');
+  canvas.width = s.clientWidth;
+  canvas.height = s.clientHeight;
+}
+
+function drawFrame(idx) {
+  const img = images[idx];
+  if (!img || !img.complete) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+  const w = img.naturalWidth * scale;
+  const h = img.naturalHeight * scale;
+  ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+}
+
+function onScroll() {
+  const rect = section.getBoundingClientRect();
+  const progress = Math.max(0, Math.min(1, -rect.top / (section.clientHeight - window.innerHeight)));
+  const frameIdx = Math.min(FRAMES - 1, Math.floor(progress * FRAMES));
+  if (frameIdx !== currentFrame) { currentFrame = frameIdx; drawFrame(currentFrame); }
+  hint.style.opacity = progress > 0.02 ? '0' : '1';
+  const fw = 0.08;
+  textPanels.forEach(({ el, from, to }) => {
+    const inF = Math.min(1, Math.max(0, (progress - from) / fw));
+    const outF = 1 - Math.min(1, Math.max(0, (progress - (to - fw)) / fw));
+    el.style.opacity = Math.min(inF, outF);
+    el.style.transform = `translateY(${(1 - inF) * 14}px)`;
+  });
+}
+
+framePaths.forEach((src, i) => {
+  const img = new Image();
+  img.onload = () => { if (i === 0) { setCanvasSize(); drawFrame(0); } };
+  img.src = src;
+  images[i] = img;
+});
+
+setCanvasSize();
+window.addEventListener('resize', () => { setCanvasSize(); drawFrame(currentFrame); });
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+// ── PERSIST SCROLL ──
+const SK = 'ksm-b-scroll';
+const saved = localStorage.getItem(SK);
+if (saved) window.scrollTo(0, parseInt(saved));
+window.addEventListener('scroll', () => localStorage.setItem(SK, window.scrollY), { passive: true });
+</script>
+</body>
+</html>

@@ -365,7 +365,7 @@ body, #loader { transition: background 0.35s ease, color 0.35s ease; }
 
 /* Big typographic opener — version-c style */
 .type-opener {
-  padding: 80px 60px 64px;
+  padding: 96px 60px 80px;
   border-bottom: 1px solid var(--rule);
   max-width: 100%;
 }
@@ -602,8 +602,26 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* Spacers */
-.spacer    { height: 72px; }
-.spacer-sm { height: 40px; }
+.spacer    { height: 96px; }
+.spacer-sm { height: 56px; }
+
+/* Animation top/bottom bleed gradient */
+.anim-fade-top,
+.anim-fade-bottom {
+  position: absolute;
+  left: 0; right: 0;
+  height: 180px;
+  pointer-events: none;
+  z-index: 2;
+}
+.anim-fade-top {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+}
+.anim-fade-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+}
 
 /* Footer — KSU blue + gold top rule */
 footer {
@@ -700,6 +718,7 @@ footer img { height: 20px; filter: brightness(0) invert(1); opacity: 0.65; }
   <div class="type-opener-text">A classroom spark in Cleveland turns into an international prosthetics mission — <em>and a new engineering path at Kent State.</em></div>
 </div>
 
+<div class="spacer"></div>
 <div class="body-col">
   <p class="drop-cap">On a warm spring evening in her Centennial Court residence hall room, Yariselle Andujar describes the moment everything clicked. She was a high school student in an AVID class in Cleveland when her teacher played a video about college — and something lit up inside her. Not just about higher education, but about what was possible.</p>
   <p>That instinct for possibility has defined her life ever since. Now 19 and a freshman in Kent State's College of Aeronautics and Engineering — pursuing industrial engineering technology with plans to transition into mechatronics — Andujar is already a mentor, an innovator and a humanitarian.</p>
@@ -727,12 +746,16 @@ footer img { height: 20px; filter: brightness(0) invert(1); opacity: 0.65; }
   <p>What began as a high school robotics idea quickly evolved into a full humanitarian program in partnership with Med Access International. In the summer of 2025, Andujar and five fellow Cleveland Metropolitan School District students traveled to Ecuador for nearly two weeks, fitting 20 children with prosthetic hands and arms at a local hospital — assisting in triage and helping youth shadow physicians during surgeries.</p>
 </div>
 
+<div class="spacer"></div>
+
 <!-- ═══════════════════════════════════════
      ACT 2 — ANIMATION WITH TYPE (Version V2)
 ═══════════════════════════════════════ -->
 <section class="anim-section" id="anim-section">
   <div class="anim-sticky">
     <canvas id="anim-canvas"></canvas>
+    <div class="anim-fade-top"></div>
+    <div class="anim-fade-bottom"></div>
 
     <div class="anim-text" id="anim-t1">
       <div class="anim-text-kicker">The Hand</div>

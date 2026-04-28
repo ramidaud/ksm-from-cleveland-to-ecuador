@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Cleveland to Ecuador — Design Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ksu-blue: #002664;
+    --ksu-gold: #EEB111;
+    --rule:     #d8d8d2;
+    --mid:      #6b6b65;
+    --ink:      #1a1a18;
+  }
+
+  body {
+    background: #f4f3f0;
+    color: var(--ink);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    min-height: 100vh;
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar { height: 5px; background: var(--ksu-blue); }
+
+  header {
+    background: var(--ksu-blue);
+    padding: 3rem 4rem 2.5rem;
+    border-bottom: 4px solid var(--ksu-gold);
+  }
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.8rem;
+  }
+  .header-title {
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .header-sub {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 1.4rem;
+  }
+  .header-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 0.5rem; }
+  .header-meta span::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 1px;
+    background: var(--ksu-gold);
+  }
+
+  /* ── INTRO ── */
+  .intro {
+    max-width: 680px;
+    margin: 3rem auto 0;
+    padding: 0 2rem 3rem;
+    text-align: center;
+  }
+  .intro p {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--mid);
+  }
+  .intro-rule {
+    width: 32px;
+    height: 2px;
+    background: var(--ksu-gold);
+    margin: 1.5rem auto;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .card:hover {
+    box-shadow: 0 12px 40px rgba(0,38,100,0.12);
+    transform: translateY(-3px);
+  }
+  .card-thumb {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+  }
+  .card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .card:hover .card-thumb img { transform: scale(1.04); }
+  .card-thumb-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+    background: linear-gradient(transparent 40%, rgba(0,0,0,0.55) 100%);
+  }
+  .card-version-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--ksu-blue);
+    padding: 0.3rem 0.6rem;
+    border-top: 2px solid var(--ksu-gold);
+  }
+  .card-version-badge.current {
+    background: var(--ksu-gold);
+    color: var(--ksu-blue);
+    border-color: #8a6200;
+  }
+  .card-body {
+    padding: 1.4rem 1.5rem 1.8rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .card-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ksu-blue);
+    line-height: 1.25;
+  }
+  .card-desc {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: var(--mid);
+    flex: 1;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid);
+    border: 1px solid var(--rule);
+    padding: 0.25rem 0.5rem;
+  }
+  .tag.gold {
+    color: #7a5800;
+    border-color: var(--ksu-gold);
+    background: #fffbe8;
+  }
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ksu-blue);
+    border-bottom: 1px solid var(--ksu-gold);
+    padding-bottom: 0.15rem;
+    align-self: flex-start;
+    transition: gap 0.2s ease;
+  }
+  .card:hover .card-cta { gap: 0.75rem; }
+
+  /* ── FOOTER ── */
+  .hub-footer {
+    background: var(--ksu-blue);
+    padding: 2rem 4rem;
+    border-top: 3px solid var(--ksu-gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .hub-footer strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ksu-gold);
+  }
+  .hub-footer span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 2rem 1.5rem 2rem; }
+    .grid { padding: 0 1rem 3rem; }
+    .hub-footer { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<header>
+  <div class="header-eyebrow">Kent State Magazine &nbsp;·&nbsp; Design Review</div>
+  <div class="header-title">From Cleveland to Ecuador</div>
+  <div class="header-sub">Four layout directions for stakeholder review</div>
+  <div class="header-meta">
+    <span>Spring 2026</span>
+    <span>College of Aeronautics &amp; Engineering</span>
+    <span>Photography by Rami Daud</span>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="intro-rule"></div>
+  <p>Four distinct editorial directions for the Yariselle Andujar story. Each explores a different approach to typography, layout, and how the 3D-printed hand animation is integrated into the reading experience.</p>
+  <div class="intro-rule"></div>
+</div>
+
+<div class="grid">
+
+  <!-- VERSION A -->
+  <a class="card" href="version-a.html" target="_blank">
+    <div class="card-thumb">
+      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00060.jpg" alt="">
+      <div class="card-thumb-overlay">
+        <span class="card-version-badge current">Version A &nbsp;·&nbsp; Primary</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">Scroll Animation — Immersive</div>
+      <div class="card-desc">Full-bleed 3D hand animation runs behind frosted editorial panels through the entire article. Parallax hero bleeds under the headline. Canvas-based, flicker-free scroll experience.</div>
+      <div class="card-tags">
+        <span class="tag gold">Animation-driven</span>
+        <span class="tag">White / light</span>
+        <span class="tag">Libre Baskerville</span>
+        <span class="tag">Full-article scroll</span>
+      </div>
+      <span class="card-cta">Open Version A →</span>
+    </div>
+  </a>
+
+  <!-- VERSION B -->
+  <a class="card" href="version-b.html" target="_blank">
+    <div class="card-thumb">
+      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00079.jpg" alt="" style="object-position: center 25%;">
+      <div class="card-thumb-overlay">
+        <span class="card-version-badge">Version B</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">Light Editorial — Chapters &amp; Collage</div>
+      <div class="card-desc">Warm parchment background with numbered chapter dividers and gold rules. Photo collage grid, stats section. Animation embedded as its own chapter mid-article. Clean, print-magazine feel.</div>
+      <div class="card-tags">
+        <span class="tag">Parchment / warm</span>
+        <span class="tag">Playfair Display</span>
+        <span class="tag">Chapter structure</span>
+        <span class="tag">Photo collage</span>
+      </div>
+      <span class="card-cta">Open Version B →</span>
+    </div>
+  </a>
+
+  <!-- VERSION C -->
+  <a class="card" href="version-c.html" target="_blank">
+    <div class="card-thumb">
+      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00114.jpg" alt="" style="filter:brightness(0.5); object-position: center 10%;">
+      <div class="card-thumb-overlay">
+        <span class="card-version-badge">Version C</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">Cinematic — Animation as Hero</div>
+      <div class="card-desc">Opens with a full-screen scroll-driven hand animation that builds the headline in stages as you scroll. Then transitions to a clean editorial layout. Most dramatic first impression.</div>
+      <div class="card-tags">
+        <span class="tag gold">Animation-as-hero</span>
+        <span class="tag">Black → light</span>
+        <span class="tag">Playfair Display</span>
+        <span class="tag">Cinematic reveal</span>
+      </div>
+      <span class="card-cta">Open Version C →</span>
+    </div>
+  </a>
+
+  <!-- VERSION v2 -->
+  <a class="card" href="version-v2.html" target="_blank">
+    <div class="card-thumb">
+      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00098.jpg" alt="" style="filter:brightness(0.45) saturate(0.5); object-position: center center;">
+      <div class="card-thumb-overlay">
+        <span class="card-version-badge">Version v2</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">Dark Mode — Night Editorial</div>
+      <div class="card-desc">Near-black background throughout with gold accents. Three-column stats grid, left-border pull quotes. Bold photo mosaic. High contrast, contemporary digital magazine aesthetic.</div>
+      <div class="card-tags">
+        <span class="tag">Dark / night</span>
+        <span class="tag">Playfair Display</span>
+        <span class="tag">Stats grid</span>
+        <span class="tag">Photo mosaic</span>
+      </div>
+      <span class="card-cta">Open Version v2 →</span>
+    </div>
+  </a>
+
+</div>
+
+<footer class="hub-footer">
+  <strong>Kent State University</strong>
+  <span>Design Review &nbsp;·&nbsp; Spring 2026 &nbsp;·&nbsp; Internal</span>
+</footer>
+
+</body>
+</html>

@@ -894,35 +894,24 @@ function resizeCanvas() {
 
 const images = new Array(FRAMES.length);
 
-function paintImg(img) {
+let currentIdx = -1;
+
+function drawFrame(idx) {
+  if (idx === currentIdx) return;
+  currentIdx = idx;
+  const img = images[idx];
+  if (!img?.complete || !img.naturalWidth) return;
   const cw = animCanvas.width, ch = animCanvas.height;
   const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
   const dw = img.naturalWidth * scale, dh = img.naturalHeight * scale;
+  ctx.clearRect(0, 0, cw, ch);
   ctx.drawImage(img, (cw - dw) / 2, (ch - dh) * 0.4, dw, dh);
-}
-
-// Interpolating draw — crossfades between adjacent frames for sub-frame smoothness
-function drawFrameInterp(prog) {
-  const frameF = prog * (FRAMES.length - 1);
-  const frameI = Math.floor(frameF);
-  const frac   = frameF - frameI;
-  const frameN = Math.min(FRAMES.length - 1, frameI + 1);
-  const imgA = images[frameI];
-  if (!imgA?.complete || !imgA.naturalWidth) return;
-  ctx.clearRect(0, 0, animCanvas.width, animCanvas.height);
-  ctx.globalAlpha = 1;
-  paintImg(imgA);
-  const imgB = images[frameN];
-  if (frac > 0.01 && imgB?.complete && imgB.naturalWidth) {
-    ctx.globalAlpha = frac;
-    paintImg(imgB);
-    ctx.globalAlpha = 1;
-  }
 }
 
 // ── RAF-THROTTLED SCROLL HANDLER ──
 let rafPending  = false;
 let pendingProg = 0;
+let pendingIdx  = 0;
 
 function onScroll() {
   const scrollY = window.scrollY;
@@ -948,8 +937,8 @@ function onScroll() {
   const animH = animSection.clientHeight - window.innerHeight;
   const prog  = Math.max(0, Math.min(1, -rect.top / animH));
 
-  // Float progress stored for interpolating draw
   pendingProg = prog;
+  pendingIdx  = Math.round(prog * (FRAMES.length - 1));
 
   // Hint fades out on first scroll
   animHint.style.opacity = prog > 0.02 ? '0' : '1';
@@ -964,11 +953,10 @@ function onScroll() {
     el.style.transform = `translateY(calc(-50% + ${(1 - inFade) * 20}px))`;
   });
 
-  // Commit interpolated frame on next animation frame
   if (!rafPending) {
     rafPending = true;
     requestAnimationFrame(() => {
-      drawFrameInterp(pendingProg);
+      drawFrame(pendingIdx);
       rafPending = false;
     });
   }
@@ -978,7 +966,8 @@ function onScroll() {
 resizeCanvas();
 window.addEventListener('resize', () => {
   resizeCanvas();
-  drawFrameInterp(pendingProg);
+  currentIdx = -1;
+  drawFrame(pendingIdx);
 }, { passive: true });
 
 let decoded = 0;
@@ -993,13 +982,12 @@ Promise.all(
       .then(() => {
         decoded++;
         loaderFill.style.width = (decoded / total * 100) + '%';
-        if (i === 0) drawFrameInterp(0); // first frame visible during load
+        if (i === 0) drawFrame(0);
       })
       .catch(() => { decoded++; });
   })
 ).then(() => {
   loaderEl.classList.add('done');
-  drawFrameInterp(0);
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 });

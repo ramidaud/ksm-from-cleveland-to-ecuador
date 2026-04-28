@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Cleveland to Ecuador — Kent State Magazine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Light mode (default) */
+:root {
+  --gold:         #EEB111;
+  --gold-dim:     #b88e0e;
+  --ksu-blue:     #002664;
+  --bg:           #f7f4ef;
+  --bg2:          #ede8e0;
+  --bg3:          #e8e2d8;
+  --text:         #2e2a24;
+  --ink:          #1a1814;
+  --muted:        #887e70;
+  --rule:         #ddd8d0;
+  --masthead-bg:  rgba(247,244,239,0.96);
+  --masthead-ink: #1a1814;
+  --col:          680px;
+}
+/* Dark mode */
+[data-theme="dark"] {
+  --bg:           #0d0d0d;
+  --bg2:          #111111;
+  --bg3:          #161616;
+  --text:         #c8c4bc;
+  --ink:          #ffffff;
+  --muted:        #777;
+  --rule:         #222;
+  --masthead-bg:  rgba(13,13,13,0.94);
+  --masthead-ink: rgba(255,255,255,0.85);
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.78;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LOADING SCREEN ── */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  transition: opacity 0.65s ease;
+}
+#loader.done { opacity: 0; pointer-events: none; }
+.loader-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.loader-track { width: 120px; height: 1px; background: var(--rule); }
+.loader-fill  { height: 1px; background: var(--gold); width: 0%; transition: width 0.1s linear; }
+
+/* ── READING PROGRESS ── */
+#progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--gold);
+  z-index: 400;
+  transition: width 0.06s linear;
+}
+
+/* ── KSU BRAND BAR ── */
+.brand-bar { height: 5px; background: var(--ksu-blue); position: relative; z-index: 21; }
+
+/* ── MASTHEAD — ghost over hero, solidifies on scroll ── */
+.masthead {
+  position: absolute;
+  top: 5px; left: 0; right: 0;
+  z-index: 30;
+  padding: 1.4rem 3.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+.masthead.scrolled {
+  position: fixed;
+  top: 0;
+  background: var(--masthead-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule);
+}
+.masthead-brand { display: flex; flex-direction: column; gap: 0.25rem; }
+/* Ghost state (over hero) always white; scrolled state follows theme */
+.masthead-ku {
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.88);
+  transition: color 0.3s;
+}
+.masthead.scrolled .masthead-ku { color: var(--masthead-ink); }
+.masthead-section {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  transition: color 0.3s;
+}
+.masthead.scrolled .masthead-section { color: var(--muted); }
+.masthead-date {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  transition: color 0.3s;
+}
+.masthead.scrolled .masthead-date { color: var(--muted); }
+/* Theme toggle button */
+.masthead-right { display: flex; align-items: center; gap: 1.2rem; }
+.theme-toggle {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 100px;
+  padding: 4px 11px;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  transition: border-color 0.3s, color 0.3s;
+  line-height: 1.6;
+}
+.masthead.scrolled .theme-toggle {
+  border-color: var(--rule);
+  color: var(--muted);
+}
+.theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ═══════════════════════════════════════
+   ACT 1 — HERO: IMAGE OPENER (Version A)
+═══════════════════════════════════════ */
+.hero-wrap {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+.hero-parallax-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 140%;
+  object-fit: cover;
+  object-position: center 25%;
+  top: -20%;
+  will-change: transform;
+}
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(0,26,64,0.62) 0%,
+      rgba(0,0,0,0.05) 32%,
+      rgba(0,0,0,0.18) 58%,
+      rgba(13,13,13,0.94) 100%);
+  z-index: 1;
+}
+.hero-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 2;
+  padding: 0 3.5rem 5rem;
+  max-width: 1000px;
+}
+.hero-kicker {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.hero-kicker::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.hero-h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(3.2rem, 7.8vw, 6.4rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #fff;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.6rem;
+}
+.hero-h1 em {
+  font-style: italic;
+  font-weight: 700;
+  color: rgba(255,255,255,0.82);
+}
+.hero-deck {
+  font-size: 1.05rem;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.62);
+  max-width: 500px;
+  margin-bottom: 1.8rem;
+}
+.hero-byline {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+/* Scroll cue — bottom right of hero */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 2.2rem;
+  right: 3.5rem;
+  z-index: 2;
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.22);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: opacity 0.5s ease;
+}
+.hero-scroll-cue.hidden { opacity: 0; }
+.hero-scroll-cue::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: var(--gold);
+  animation: growLine 1.9s ease-in-out infinite;
+}
+@keyframes growLine {
+  0%, 100% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  50%       { opacity: 1; transform: scaleY(1); }
+}
+
+/* ═══════════════════════════════════════
+   ACT 2 — ANIMATION WITH TYPE (Version V2)
+═══════════════════════════════════════ */
+.anim-section {
+  position: relative;
+  height: 420vh;
+  background: #000;
+}
+.anim-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+#anim-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Text panels ride over the animation, V2 style */
+.anim-text {
+  position: absolute;
+  left: 64px;
+  top: 50%;
+  transform: translateY(-50%) translateY(20px);
+  max-width: 390px;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.anim-text-kicker {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+.anim-text-body {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(20px, 2.6vw, 30px);
+  font-weight: 400;
+  font-style: italic;
+  color: #111;
+  line-height: 1.42;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  text-wrap: pretty;
+}
+.anim-corner-label {
+  position: absolute;
+  bottom: 36px;
+  right: 48px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+.anim-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 0; right: 0;
+  text-align: center;
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.25);
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
+
+/* Smooth theme transitions */
+body, #loader { transition: background 0.35s ease, color 0.35s ease; }
+
+/* ═══════════════════════════════════════
+   ACT 3 — STORY BODY (Version C)
+═══════════════════════════════════════ */
+
+/* Big typographic opener — version-c style */
+.type-opener {
+  padding: 80px 60px 64px;
+  border-bottom: 1px solid var(--rule);
+  max-width: 100%;
+}
+.type-opener-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+.type-opener-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.06;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+  max-width: 920px;
+}
+.type-opener-text em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* Section label with extending rule */
+.section-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 28px 60px 0;
+  max-width: calc(var(--col) + 120px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  max-width: 360px;
+}
+
+/* Body text column */
+.body-col {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 60px;
+}
+p { margin-bottom: 1.52em; }
+p:last-child { margin-bottom: 0; }
+
+/* Drop cap on opening paragraph */
+.drop-cap::first-letter {
+  float: left;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 4.4rem;
+  font-weight: 900;
+  line-height: 0.80;
+  margin: 0.05em 0.12em 0 0;
+  color: var(--gold);
+}
+
+/* Inline photo */
+.inline-photo { margin: 56px 0; }
+.inline-photo img {
+  width: 100%;
+  display: block;
+  max-height: 560px;
+  object-fit: cover;
+}
+.inline-photo figcaption {
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  color: var(--muted);
+  padding-top: 12px;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+/* Pull quote — gold left border, Playfair italic */
+.pull-quote {
+  border-left: 3px solid var(--gold);
+  padding: 8px 0 8px 32px;
+  margin: 64px 0;
+}
+.pull-quote blockquote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(20px, 2.4vw, 27px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.47;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.pull-quote cite {
+  display: block;
+  margin-top: 16px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-style: normal;
+}
+
+/* Stats slab */
+.stats-section {
+  background: var(--bg3);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 76px 60px;
+}
+.stats-inner {
+  max-width: calc(var(--col) + 120px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.stat { padding: 0 40px; text-align: center; border-right: 1px solid var(--rule); }
+.stat:first-child { padding-left: 0; }
+.stat:last-child  { border-right: none; padding-right: 0; }
+.stat-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(38px, 4.8vw, 58px);
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.stat-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+/* Collage pair */
+.collage-wrap {
+  max-width: calc(var(--col) + 120px);
+  margin: 0 auto;
+  padding: 0 60px 56px;
+  display: flex;
+}
+.collage-wrap img {
+  width: 60%;
+  object-fit: cover;
+  max-height: 420px;
+  display: block;
+}
+.collage-wrap img.secondary {
+  width: 40%;
+  margin-top: 56px;
+  margin-left: -3%;
+  max-height: 340px;
+  outline: 4px solid var(--bg);
+  object-fit: cover;
+}
+
+/* Photo grid */
+.photo-grid-wrap {
+  max-width: calc(var(--col) + 120px);
+  margin: 0 auto;
+  overflow: hidden;
+}
+.photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 3px;
+}
+.photo-grid .item { position: relative; overflow: hidden; }
+.photo-grid .item img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  min-height: 300px;
+  transition: transform 0.65s ease;
+}
+.photo-grid .item:hover img { transform: scale(1.03); }
+.photo-grid .item.tall { grid-row: span 2; }
+.photo-grid figcaption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.72));
+  padding: 40px 20px 14px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.68);
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+/* Closing quote — centered, Playfair italic */
+.closing {
+  padding: 100px 60px;
+  text-align: center;
+  border-top: 1px solid var(--rule);
+}
+.closing-rule {
+  width: 40px; height: 1px;
+  background: var(--gold);
+  margin: 0 auto 28px;
+}
+.closing-quote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(24px, 3.5vw, 44px);
+  font-style: italic;
+  color: var(--ink);
+  max-width: 720px;
+  margin: 0 auto 24px;
+  line-height: 1.38;
+  text-wrap: pretty;
+}
+.closing-attr {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Spacers */
+.spacer    { height: 72px; }
+.spacer-sm { height: 40px; }
+
+/* Footer — KSU blue + gold top rule */
+footer {
+  background: var(--ksu-blue);
+  border-top: 4px solid var(--gold);
+  padding: 44px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+footer img { height: 20px; filter: brightness(0) invert(1); opacity: 0.65; }
+.footer-meta {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  text-align: right;
+  line-height: 2;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 640px) {
+  .masthead { padding: 1.1rem 1.5rem; }
+  .hero-content { padding: 0 1.5rem 3.5rem; }
+  .hero-scroll-cue { right: 1.5rem; }
+  .anim-text { left: 28px; max-width: calc(100% - 56px); }
+  .section-label { padding: 28px 24px 0; }
+  .body-col { padding: 0 24px; }
+  .stats-section { padding: 56px 24px; }
+  .stats-inner { grid-template-columns: 1fr; }
+  .stat {
+    border-right: none; padding: 0 0 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .stat:last-child { border-bottom: none; padding-bottom: 0; }
+  .collage-wrap { padding: 0 24px 48px; }
+  .closing { padding: 72px 24px; }
+  footer { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
+  .footer-meta { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loading screen — holds until all 192 frames are decoded -->
+<div id="loader">
+  <span class="loader-label">Loading</span>
+  <div class="loader-track"><div class="loader-fill" id="loader-fill"></div></div>
+</div>
+
+<div id="progress"></div>
+<div class="brand-bar"></div>
+
+<header class="masthead" id="masthead">
+  <div class="masthead-brand">
+    <span class="masthead-ku">Kent State University</span>
+    <span class="masthead-section">Field Notes &nbsp;·&nbsp; Research &amp; Impact</span>
+  </div>
+  <div class="masthead-right">
+    <span class="masthead-date">Spring 2026 &nbsp;·&nbsp; Engineering</span>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">Dark</button>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════
+     ACT 1 — HERO: IMAGE OPENER (Version A)
+═══════════════════════════════════════ -->
+<div class="hero-wrap" id="hero-wrap">
+  <img class="hero-parallax-img" id="hero-img"
+    src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00060.jpg"
+    alt="Yariselle Andujar in the KSU engineering lab">
+  <div class="hero-gradient"></div>
+
+  <div class="hero-content">
+    <div class="hero-kicker">College of Aeronautics &amp; Engineering &nbsp;·&nbsp; Prosthetics</div>
+    <h1 class="hero-h1">From Cleveland<br><em>to Ecuador</em></h1>
+    <p class="hero-deck">One Flash's mission to change lives, one limb at a time.</p>
+    <div class="hero-byline">Photography by Rami Daud &nbsp;·&nbsp; Spring 2026</div>
+  </div>
+
+  <div class="hero-scroll-cue" id="hero-scroll-cue">Scroll</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     ACT 3 — STORY BODY (Version C)
+═══════════════════════════════════════ -->
+
+<div class="type-opener">
+  <div class="type-opener-label">Opening Scene</div>
+  <div class="type-opener-text">A classroom spark in Cleveland turns into an international prosthetics mission — <em>and a new engineering path at Kent State.</em></div>
+</div>
+
+<div class="body-col">
+  <p class="drop-cap">On a warm spring evening in her Centennial Court residence hall room, Yariselle Andujar describes the moment everything clicked. She was a high school student in an AVID class in Cleveland when her teacher played a video about college — and something lit up inside her. Not just about higher education, but about what was possible.</p>
+  <p>That instinct for possibility has defined her life ever since. Now 19 and a freshman in Kent State's College of Aeronautics and Engineering — pursuing industrial engineering technology with plans to transition into mechatronics — Andujar is already a mentor, an innovator and a humanitarian.</p>
+  <p>She is also one of the founding members of a student-led program that has delivered 3D-printed prosthetic limbs to more than 50 children in Ecuador.</p>
+</div>
+
+<div class="spacer-sm"></div>
+<div style="max-width: calc(var(--col) + 120px); margin: 0 auto; padding: 0 60px;">
+  <figure class="inline-photo">
+    <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00079.jpg"
+      alt="Yariselle examining the prosthetic hand">
+    <figcaption>Examining iteration 20-something — Great Lakes Science Center, Cleveland</figcaption>
+  </figure>
+</div>
+
+<div class="body-col">
+  <p>The project started in 2022 at the Great Lakes Science Center in Cleveland, where Andujar and fellow student Daniela Valentina Moreno Machuca were part of a First Robotics team — the Argonauts, Team 8222. Working under robotics leader Timothy Hatfield, the two students noticed something remarkable: the same 3D-printing technology they were using to build affordable robot parts could be used to create prosthetic limbs.</p>
+  <p>The math was striking. A commercially manufactured prosthetic hand or arm for a child can cost between $5,000 and $10,000 — and children outgrow them. With 3D printing, the same device could be produced for as little as $55 to $60.</p>
+
+  <div class="pull-quote">
+    <blockquote>"Seeing the small things that they ask for — like being able to eat or wipe themselves — we don't understand how important that is for someone missing that in their life."</blockquote>
+    <cite>Yariselle Andujar</cite>
+  </div>
+
+  <p>What began as a high school robotics idea quickly evolved into a full humanitarian program in partnership with Med Access International. In the summer of 2025, Andujar and five fellow Cleveland Metropolitan School District students traveled to Ecuador for nearly two weeks, fitting 20 children with prosthetic hands and arms at a local hospital — assisting in triage and helping youth shadow physicians during surgeries.</p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ACT 2 — ANIMATION WITH TYPE (Version V2)
+═══════════════════════════════════════ -->
+<section class="anim-section" id="anim-section">
+  <div class="anim-sticky">
+    <canvas id="anim-canvas"></canvas>
+
+    <div class="anim-text" id="anim-t1">
+      <div class="anim-text-kicker">The Hand</div>
+      <div class="anim-text-body">The same 3D-printing technology used to build robot parts — repurposed to give children movement.</div>
+    </div>
+
+    <div class="anim-text" id="anim-t2">
+      <div class="anim-text-kicker">By the Numbers</div>
+      <div class="anim-text-body">A commercial prosthetic costs $5,000–$10,000. This one: $55.</div>
+    </div>
+
+    <div class="anim-text" id="anim-t3">
+      <div class="anim-text-kicker">50+ Children Served</div>
+      <div class="anim-text-body">"Seeing the small things they ask for — like being able to eat — we don't understand how important that is."</div>
+    </div>
+
+    <div class="anim-hint" id="anim-hint">Scroll to animate</div>
+    <div class="anim-corner-label">3D-Printed Prosthetic &nbsp;·&nbsp; Argonauts Team 8222</div>
+  </div>
+</section>
+
+<div class="spacer"></div>
+<div class="stats-section">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">$55–60</div>
+      <div class="stat-label">3D-printed cost</div>
+      <div class="stat-desc">The same device produced for a fraction of the cost of a commercial pediatric prosthetic.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$5K–10K</div>
+      <div class="stat-label">Commercial range</div>
+      <div class="stat-desc">That gap matters most for children, who outgrow devices quickly and need replacements as they grow.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Children served</div>
+      <div class="stat-desc">An ongoing humanitarian effort with real patients and repeat fittings in Ecuador.</div>
+    </div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+<div class="section-label">Ecuador, Summer 2025</div>
+<div class="spacer-sm"></div>
+
+<div class="body-col">
+  <p>In the summer of 2025, the team traveled to Ibarra, Ecuador for nearly two weeks — fitting 20 children with prosthetic hands and arms at a local hospital, assisting in triage, and helping youth shadow physicians during surgeries.</p>
+  <p>The group also trained students and teachers at a technical college on 3D printing and met with the Ministry of Health for the Republic of Ecuador to advocate for STEM education.</p>
+  <p>The team is now at work on a new model for a returning patient named Samantha — a young woman they first served on a previous trip. The newest design features a Japanese-style arm fitted with a custom sleeve socket, refined after the previous model did not perform as expected.</p>
+</div>
+
+<div class="spacer-sm"></div>
+<div class="collage-wrap">
+  <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/fromYari/IMG-20250803-WA0191.jpg"
+    alt="The team in Ibarra, Ecuador">
+  <img class="secondary"
+    src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/fromYari/20250726_072430.jpg"
+    alt="On the ground, Ibarra">
+</div>
+
+<div class="photo-grid-wrap">
+  <div class="photo-grid">
+    <figure class="item tall">
+      <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/fromYari/IMG_6181.jpg"
+        alt="A fitting session with a young patient" style="min-height:500px;">
+      <figcaption>A fitting session with a young patient, Ibarra</figcaption>
+    </figure>
+    <figure class="item">
+      <img src="https://ramidaud.github.io/ksm-from-cleveland-to-ecuador/Yari/fromYari/20250604_160602.jpg"
+        alt="Ecuador, Summer 2025">
+      <figcaption>Ecuador, Summer 2025</figcaption>
+    </figure>
+    <figure class="item">
+      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00098.jpg"
+        alt="The work in her hands">
+      <figcaption>The work in her hands</figcaption>
+    </figure>
+  </div>
+</div>
+
+<div class="spacer"></div>
+<div class="section-label">Now a Mentor</div>
+<div class="spacer-sm"></div>
+
+<div class="body-col">
+  <p>Andujar has since transitioned from student participant to program mentor. She recently helped lead an interview process to select six high school students for the program's upcoming trip to Ibarra, Ecuador, planned for June 22 through July 2, 2026.</p>
+  <p>As a freshman focused on establishing her academic footing, she has spent this first year getting settled — visiting the university's combat robotics team, working briefly in a campus VR lab. She recently learned for the first time that the College of Aeronautics and Engineering has a design lab equipped with 3D printers that students may be able to access.</p>
+  <p>When asked what drives her, Andujar pauses. Then speaks with quiet certainty.</p>
+</div>
+
+<div class="spacer"></div>
+<div class="closing">
+  <div class="closing-rule"></div>
+  <div class="closing-quote">"I think it gives me hope for the world. I just fell in love with the original concept that we created, and then it became something 10 times better."</div>
+  <div class="closing-rule" style="margin-top: 28px;"></div>
+  <div class="closing-attr">Yariselle Andujar &nbsp;·&nbsp; Freshman, College of Aeronautics &amp; Engineering &nbsp;·&nbsp; Kent State University</div>
+</div>
+
+<footer>
+  <img src="KSM-logo-horizontal-invert.svg" alt="Kent State Magazine">
+  <div class="footer-meta">
+    Field Notes &nbsp;·&nbsp; Research &amp; Impact<br>
+    Photography · Rami Daud &nbsp;·&nbsp; Spring 2026
+  </div>
+</footer>
+
+
+<script>
+// ── THEME TOGGLE ──
+const themeToggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+
+function applyTheme(theme) {
+  html.dataset.theme = theme;
+  themeToggle.textContent = theme === 'dark' ? 'Light' : 'Dark';
+  localStorage.setItem('ksm-theme', theme);
+}
+
+// Default light; restore saved preference if present
+applyTheme(localStorage.getItem('ksm-theme') || 'light');
+
+themeToggle.addEventListener('click', () => {
+  applyTheme(html.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+
+// ── FRAME SEQUENCE (every other frame, 96 total, from images/) ──
+const FRAMES = Array.from({length: 96}, (_, i) =>
+  `images/Frame%20${i * 2 + 1}.jpg`
+);
+
+const loaderEl    = document.getElementById('loader');
+const loaderFill  = document.getElementById('loader-fill');
+const progressBar = document.getElementById('progress');
+const masthead    = document.getElementById('masthead');
+const heroWrap    = document.getElementById('hero-wrap');
+const heroImg     = document.getElementById('hero-img');
+const scrollCue   = document.getElementById('hero-scroll-cue');
+const animSection = document.getElementById('anim-section');
+const animCanvas  = document.getElementById('anim-canvas');
+const animHint    = document.getElementById('anim-hint');
+
+const ctx = animCanvas.getContext('2d');
+const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+// Text panel definitions: progress windows (0–1 over animation scroll)
+const textPanels = [
+  { el: document.getElementById('anim-t1'), from: 0.00, to: 0.40 },
+  { el: document.getElementById('anim-t2'), from: 0.37, to: 0.70 },
+  { el: document.getElementById('anim-t3'), from: 0.67, to: 1.00 },
+];
+
+// ── CANVAS RESIZE ──
+function resizeCanvas() {
+  const sticky = animCanvas.parentElement;
+  animCanvas.width  = sticky.clientWidth  * dpr;
+  animCanvas.height = sticky.clientHeight * dpr;
+}
+
+const images = new Array(FRAMES.length);
+
+function paintImg(img) {
+  const cw = animCanvas.width, ch = animCanvas.height;
+  const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+  const dw = img.naturalWidth * scale, dh = img.naturalHeight * scale;
+  ctx.drawImage(img, (cw - dw) / 2, (ch - dh) * 0.4, dw, dh);
+}
+
+// Interpolating draw — crossfades between adjacent frames for sub-frame smoothness
+function drawFrameInterp(prog) {
+  const frameF = prog * (FRAMES.length - 1);
+  const frameI = Math.floor(frameF);
+  const frac   = frameF - frameI;
+  const frameN = Math.min(FRAMES.length - 1, frameI + 1);
+  const imgA = images[frameI];
+  if (!imgA?.complete || !imgA.naturalWidth) return;
+  ctx.clearRect(0, 0, animCanvas.width, animCanvas.height);
+  ctx.globalAlpha = 1;
+  paintImg(imgA);
+  const imgB = images[frameN];
+  if (frac > 0.01 && imgB?.complete && imgB.naturalWidth) {
+    ctx.globalAlpha = frac;
+    paintImg(imgB);
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ── RAF-THROTTLED SCROLL HANDLER ──
+let rafPending  = false;
+let pendingProg = 0;
+
+function onScroll() {
+  const scrollY = window.scrollY;
+  const heroH   = heroWrap.offsetHeight;
+  const pageH   = document.body.scrollHeight - window.innerHeight;
+
+  // Reading progress bar
+  progressBar.style.width = (scrollY / pageH * 100) + '%';
+
+  // Masthead: ghost → solid
+  masthead.classList.toggle('scrolled', scrollY > heroH - 80);
+
+  // Hero parallax
+  if (scrollY < heroH) {
+    heroImg.style.transform = `translateY(${scrollY * 0.35}px)`;
+  }
+
+  // Hero scroll cue
+  scrollCue.classList.toggle('hidden', scrollY > 160);
+
+  // Animation progress (0→1 as you scroll through the 420vh section)
+  const rect  = animSection.getBoundingClientRect();
+  const animH = animSection.clientHeight - window.innerHeight;
+  const prog  = Math.max(0, Math.min(1, -rect.top / animH));
+
+  // Float progress stored for interpolating draw
+  pendingProg = prog;
+
+  // Hint fades out on first scroll
+  animHint.style.opacity = prog > 0.02 ? '0' : '1';
+
+  // Text panels: fade in, hold, fade out
+  const fadeW = 0.09;
+  textPanels.forEach(({ el, from, to }) => {
+    const inFade  = Math.min(1, Math.max(0, (prog - from) / fadeW));
+    const outFade = 1 - Math.min(1, Math.max(0, (prog - (to - fadeW)) / fadeW));
+    const opacity = Math.min(inFade, outFade);
+    el.style.opacity = opacity;
+    el.style.transform = `translateY(calc(-50% + ${(1 - inFade) * 20}px))`;
+  });
+
+  // Commit interpolated frame on next animation frame
+  if (!rafPending) {
+    rafPending = true;
+    requestAnimationFrame(() => {
+      drawFrameInterp(pendingProg);
+      rafPending = false;
+    });
+  }
+}
+
+// ── PRELOAD ALL FRAMES ──
+resizeCanvas();
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  drawFrameInterp(pendingProg);
+}, { passive: true });
+
+let decoded = 0;
+const total = FRAMES.length;
+
+Promise.all(
+  FRAMES.map((src, i) => {
+    const img = new Image();
+    img.src   = src;
+    images[i] = img;
+    return img.decode()
+      .then(() => {
+        decoded++;
+        loaderFill.style.width = (decoded / total * 100) + '%';
+        if (i === 0) drawFrameInterp(0); // first frame visible during load
+      })
+      .catch(() => { decoded++; });
+  })
+).then(() => {
+  loaderEl.classList.add('done');
+  drawFrameInterp(0);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+});
+</script>
+
+</body>
+</html>

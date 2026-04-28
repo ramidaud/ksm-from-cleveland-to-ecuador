@@ -3,359 +3,903 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>From Cleveland to Ecuador — Design Review</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<title>From Cleveland to Ecuador — Field Notes / KSU Engineering</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Mono:wght@300;400&family=Source+Serif+4:opsz,wght@8..60,400..700&display=swap');
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --ksu-blue: #002664;
-    --ksu-gold: #EEB111;
-    --rule:     #d8d8d2;
-    --mid:      #6b6b65;
-    --ink:      #1a1a18;
+    --white: #ffffff;
+    --ink: #1a1a18;
+    --mid: #6b6b65;
+    --rule: #d8d8d2;
+    --ksu-blue:  #002664;
+    --ksu-gold:  #EEB111;
+    --col:       min(660px, calc(100vw - 4rem));   /* body text column  */
+    --col-wide:  min(980px, calc(100vw - 4rem));   /* split panels      */
+    --col-quote: min(600px, calc(100vw - 4rem));   /* pull quote        */
+    --margin-l:  clamp(2rem, 6vw, 5rem);           /* left page margin  */
   }
+
+  html { scroll-behavior: smooth; }
 
   body {
-    background: #f4f3f0;
+    background: #fdfefe;
     color: var(--ink);
-    font-family: 'Libre Baskerville', Georgia, serif;
-    min-height: 100vh;
+    font-family: 'Source Serif 4', Georgia, serif;
+    overflow-x: hidden;
   }
 
-  /* ── TOP BAR ── */
-  .top-bar { height: 5px; background: var(--ksu-blue); }
-
-  header {
-    background: var(--ksu-blue);
-    padding: 3rem 4rem 2.5rem;
-    border-bottom: 4px solid var(--ksu-gold);
+  /* ── PROGRESS ── */
+  .progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px; background: var(--ksu-gold);
+    width: 0%; z-index: 200; transition: width 0.04s linear;
   }
-  .header-eyebrow {
+
+  /* ── BRAND BAR ── */
+  .brand-bar { height: 4px; background: var(--ksu-blue); width: 100%; position: relative; z-index: 21; }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    position: absolute; top: 4px; left: 0; right: 0; z-index: 30;
+    padding: 1.6rem 3.5rem;
+    background: transparent;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .masthead.scrolled {
+    position: fixed; top: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead.scrolled .masthead-section,
+  .masthead.scrolled .masthead-date { color: var(--mid); }
+  .masthead-brand { display: flex; flex-direction: column; gap: 0.55rem; }
+  .masthead-brandmark-wrap {
+    display: inline-flex; align-items: center; width: fit-content;
+    padding: 0.5rem 0.8rem 0.44rem; border-radius: 999px;
+    background: rgba(0,38,100,0.88);
+    box-shadow: 0 10px 24px rgba(0,22,56,0.14);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  .masthead-brandmark { display: block; width: clamp(140px,16vw,220px); height: auto; }
+  .masthead-section, .masthead-date {
     font-family: 'DM Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
-    margin-bottom: 0.8rem;
+    font-size: 0.52rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+    transition: color 0.3s ease;
   }
-  .header-title {
-    font-size: clamp(1.6rem, 4vw, 2.8rem);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.5rem;
+  .masthead.scrolled .masthead-brandmark-wrap { background: var(--ksu-blue); box-shadow: none; }
+
+  /* ── HERO ── */
+  .hero-image-wrap { position: relative; height: 100vh; overflow: hidden; z-index: 20; }
+  .hero-parallax-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 140%;
+    object-fit: cover; object-position: center 30%;
+    will-change: transform; top: -20%;
   }
-  .header-sub {
-    font-size: 0.95rem;
-    font-style: italic;
-    color: rgba(255,255,255,0.55);
-    margin-bottom: 1.4rem;
+  .hero-gradient {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      rgba(0,26,64,0.50) 0%, rgba(0,26,64,0.08) 30%,
+      rgba(0,0,0,0.08) 55%, rgba(0,0,0,0.76) 100%);
+    z-index: 1;
   }
-  .header-meta {
+  .hero-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    z-index: 2; padding: 0 4rem 5.5rem; max-width: 900px;
+  }
+  .hero-kicker {
     font-family: 'DM Mono', monospace;
-    font-size: 0.52rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
+    font-size: 0.58rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--ksu-gold);
+    margin-bottom: 1.6rem; display: flex; align-items: center; gap: 0.9rem;
   }
-  .header-meta span { display: flex; align-items: center; gap: 0.5rem; }
-  .header-meta span::before {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 1px;
-    background: var(--ksu-gold);
+  .hero-kicker::before {
+    content: ''; display: inline-block;
+    width: 28px; height: 1px; background: var(--ksu-gold); flex-shrink: 0;
   }
-
-  /* ── INTRO ── */
-  .intro {
-    max-width: 680px;
-    margin: 3rem auto 0;
-    padding: 0 2rem 3rem;
-    text-align: center;
+  .hero h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(3.4rem,8vw,9.5rem); line-height: 0.94;
+    font-weight: 600; letter-spacing: -0.03em; margin-bottom: 2rem; color: #fff;
   }
-  .intro p {
-    font-size: 0.9rem;
-    line-height: 1.75;
-    color: var(--mid);
+  .hero-deck {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.05rem,1.5vw,1.3rem); line-height: 1.68;
+    color: rgba(255,255,255,0.7); font-style: italic;
+    max-width: 440px; margin-bottom: 2.2rem;
   }
-  .intro-rule {
-    width: 32px;
-    height: 2px;
-    background: var(--ksu-gold);
-    margin: 1.5rem auto;
+  .byline {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(255,255,255,0.38);
+    display: flex; gap: 2.5rem;
   }
 
-  /* ── GRID ── */
-  .grid {
+  /* ── SCROLL ZONE ── */
+  .scroll-zone { position: relative; background: transparent; }
+
+  /* ── HAND BACKGROUND — full viewport, sticky ── */
+  .hand-bg {
+    position: sticky; top: 0; left: 0;
+    width: 100%; height: 100vh;
+    margin-bottom: -100vh;
+    pointer-events: none; z-index: 0;
+    background: #f8fbff;
+    overflow: hidden; will-change: transform;
+  }
+  .hand-poster {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 70%;
+    opacity: 0; transition: opacity 0.45s ease;
+  }
+  .hand-poster.is-visible { opacity: 1; }
+
+  /* Reading zone: white on left for text, hand glows through on the right */
+  .hand-bg::before {
+    content: ''; position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(to right,
+      rgba(248,251,255,0.97)  0%,
+      rgba(248,251,255,0.90) 26%,
+      rgba(248,251,255,0.42) 48%,
+      rgba(248,251,255,0.00) 62%);
+  }
+
+  /* ── LOADER ── */
+  #loader {
+    position: fixed; inset: 0; background: var(--white); z-index: 500;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1.4rem; transition: opacity 0.5s ease;
+  }
+  #loader.done { opacity: 0; pointer-events: none; }
+  .loader-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.26em;
+    text-transform: uppercase; color: var(--mid);
+  }
+  .loader-bar-track { width: 96px; height: 1px; background: var(--rule); }
+  .loader-bar-fill { height: 1px; background: var(--ksu-gold); width: 0%; transition: width 0.1s linear; }
+
+  /* ── ARTICLE SCROLL — text floats above the hand ── */
+  .article-scroll {
+    position: relative; z-index: 10;
+    width: 100%; padding: 0;
+  }
+
+  .reveal-spacer {
+    height: 30vh; display: flex; align-items: flex-end;
+    padding: 0 0 3rem var(--margin-l);
+    position: relative; z-index: 1;
+  }
+  .scroll-cue {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--mid);
+    animation: breathe 2.4s ease-in-out infinite; transition: opacity 0.4s ease;
+  }
+  .scroll-cue.hidden { opacity: 0 !important; animation: none; }
+  @keyframes breathe { 0%,100% { opacity:.22; } 50% { opacity:.85; } }
+
+  /* ── TEXT PANELS ── */
+  .text-panel {
+    width: var(--col);
+    margin-left: var(--margin-l);
+    padding: 0; background: transparent;
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.72s ease, transform 0.72s ease;
+  }
+  .text-panel.visible { opacity: 1; transform: translateY(0); }
+
+  .text-panel--split {
+    width: var(--col-wide);
+  }
+
+  /* ── PANEL GRID — text + photo ── */
+  .panel-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem 5rem;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: 3.8rem; align-items: start;
+  }
+  .panel-copy, .panel-visual { min-width: 0; }
+  .panel-copy { max-width: 58ch; }
+
+  .panel-visual img {
+    width: 100%; display: block;
+    aspect-ratio: 4/5; object-fit: cover;
+    box-shadow: 0 28px 60px rgba(0,38,100,0.09);
+  }
+  .panel-visual--uncropped img {
+    aspect-ratio: auto; height: auto;
+    max-height: 55vh; object-fit: contain; object-position: center top;
+    box-shadow: 0 20px 44px rgba(0,38,100,0.07);
+  }
+  .panel-visual--sticky { position: sticky; top: 10vh; align-self: start; }
+  .panel-visual figcaption {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.44rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--mid);
+    margin-top: 0.65rem; line-height: 1.8;
+    border-top: 1px solid rgba(0,38,100,0.07); padding-top: 0.5rem;
   }
 
-  /* ── CARD ── */
-  .card {
-    background: #fff;
-    border: 1px solid var(--rule);
-    display: flex;
-    flex-direction: column;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-    text-decoration: none;
-    color: inherit;
+  /* ── LEAD OPENING ── */
+  .lead-label {
+    display: block; font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--ksu-blue); margin-bottom: 1.4rem;
   }
-  .card:hover {
-    box-shadow: 0 12px 40px rgba(0,38,100,0.12);
-    transform: translateY(-3px);
+  .lead-standfirst {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.28rem,2vw,1.75rem); line-height: 1.5;
+    font-weight: 500; font-style: italic; color: var(--ink);
+    margin-bottom: 2.4rem; max-width: 50ch; letter-spacing: -0.01em;
   }
-  .card-thumb {
+
+  /* ── BODY TYPOGRAPHY ── */
+  .article-text { font-size: 1.06rem; line-height: 2.0; }
+  .article-text p { margin-bottom: 1.75rem; }
+  .article-text p:last-child { margin-bottom: 0; }
+
+  /* Drop cap: ONLY the opening paragraph */
+  .text-panel--lead .article-text > p:first-of-type::first-letter {
+    float: left; font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 4.4rem; line-height: 0.8;
+    margin: 0.07em 0.1em 0 0; font-weight: 700; color: var(--ksu-blue);
+  }
+
+  /* ── STANDALONE PULL QUOTE ── */
+  .standalone-quote {
+    width: var(--col-quote);
+    margin-left: var(--margin-l);
+    margin-top: 3.5rem; margin-bottom: 3.5rem;
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.72s ease, transform 0.72s ease;
+  }
+  .standalone-quote.visible { opacity: 1; transform: translateY(0); }
+  .standalone-quote-mark {
+    display: block; font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 5.5rem; line-height: 0.65; color: var(--ksu-gold);
+    margin-bottom: 0.7rem; font-weight: 600;
+  }
+  .standalone-quote-text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.7rem,2.6vw,2.4rem); line-height: 1.28;
+    font-weight: 500; font-style: italic; color: var(--ink);
+    letter-spacing: -0.025em; margin-bottom: 1.5rem;
+    padding-left: 1.8rem; border-left: 2px solid var(--ksu-gold);
+  }
+  .standalone-quote-attribution {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--mid);
+    padding-left: 1.8rem; font-style: normal;
+  }
+
+  /* ── BREATHING GAPS ── */
+  .gap { height: 22vh; position: relative; z-index: 1; }
+
+  /* ── HORIZONTAL CARD SECTION ── */
+  .hscroll-section {
+    position: relative; z-index: 12;
     width: 100%;
-    height: 200px;
-    overflow: hidden;
-    position: relative;
   }
-  .card-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 20%;
-    display: block;
-    transition: transform 0.4s ease;
+  .hscroll-viewport {
+    position: sticky; top: 0; height: 100vh;
+    background: #f9fbfe;
+    display: flex; flex-direction: column; overflow: hidden;
   }
-  .card:hover .card-thumb img { transform: scale(1.04); }
-  .card-thumb-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    padding: 1rem;
-    background: linear-gradient(transparent 40%, rgba(0,0,0,0.55) 100%);
+  .hscroll-header {
+    flex-shrink: 0;
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 2.4rem var(--margin-l) 1.1rem;
+    border-bottom: 1px solid rgba(0,38,100,0.07);
   }
-  .card-version-badge {
+  .hscroll-kicker {
     font-family: 'DM Mono', monospace;
-    font-size: 0.5rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #fff;
-    background: var(--ksu-blue);
-    padding: 0.3rem 0.6rem;
-    border-top: 2px solid var(--ksu-gold);
+    font-size: 0.52rem; letter-spacing: 0.26em;
+    text-transform: uppercase; color: var(--ksu-blue);
   }
-  .card-version-badge.current {
-    background: var(--ksu-gold);
-    color: var(--ksu-blue);
-    border-color: #8a6200;
-  }
-  .card-body {
-    padding: 1.4rem 1.5rem 1.8rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-  }
-  .card-name {
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--ksu-blue);
-    line-height: 1.25;
-  }
-  .card-desc {
-    font-size: 0.8rem;
-    line-height: 1.65;
-    color: var(--mid);
-    flex: 1;
-  }
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.4rem;
-  }
-  .tag {
+  .hscroll-hint {
     font-family: 'DM Mono', monospace;
-    font-size: 0.46rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mid);
-    border: 1px solid var(--rule);
-    padding: 0.25rem 0.5rem;
+    font-size: 0.48rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--mid);
+    transition: opacity 0.4s ease;
   }
-  .tag.gold {
-    color: #7a5800;
-    border-color: var(--ksu-gold);
-    background: #fffbe8;
+  .hscroll-hint.hidden { opacity: 0; }
+  .hscroll-track-wrapper { flex: 1; overflow: hidden; display: flex; align-items: center; }
+  .hscroll-track {
+    display: flex; gap: 2rem;
+    padding: 0 var(--margin-l);
+    align-items: stretch; will-change: transform;
   }
-  .card-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
+
+  /* Cards */
+  .h-card {
+    flex: 0 0 auto; border-radius: 3px;
+    height: clamp(300px,56vh,480px);
+    position: relative; overflow: hidden;
+  }
+  .h-card--stat {
+    width: clamp(240px,32vw,420px);
+    background: var(--white);
+    border-top: 3px solid var(--ksu-gold);
+    box-shadow: 0 16px 44px rgba(0,38,100,0.07);
+    padding: 2.2rem 2.6rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .h-stat-top { display: flex; flex-direction: column; }
+  .h-stat-number {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(3rem,6.5vw,5.5rem); line-height: 1;
+    letter-spacing: -0.045em; color: var(--ksu-blue);
+    font-weight: 600; display: block; margin-bottom: 0.55rem;
+  }
+  .h-stat-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.5rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--ksu-blue);
-    border-bottom: 1px solid var(--ksu-gold);
-    padding-bottom: 0.15rem;
-    align-self: flex-start;
-    transition: gap 0.2s ease;
+    font-size: 0.48rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--mid); display: block;
   }
-  .card:hover .card-cta { gap: 0.75rem; }
+  .h-stat-copy {
+    font-size: 0.95rem; line-height: 1.78; color: var(--ink);
+    padding-top: 1.4rem; border-top: 1px solid var(--rule);
+  }
+  .h-card--photo {
+    width: clamp(210px,26vw,360px);
+    box-shadow: 0 16px 44px rgba(0,38,100,0.09); cursor: zoom-in;
+  }
+  .h-card--photo .lightbox-trigger {
+    display: block; width: 100%; height: 100%;
+    padding: 0; border: 0; background: transparent; cursor: zoom-in;
+  }
+  .h-card--photo img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block; pointer-events: none;
+  }
+  .h-card--photo figcaption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 2rem 1.2rem 1rem;
+    background: linear-gradient(to top, rgba(0,26,64,0.72) 0%, transparent 100%);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.44rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(255,255,255,0.82);
+    line-height: 1.7; pointer-events: none;
+  }
+  .hscroll-progress {
+    flex-shrink: 0; margin: 1.4rem var(--margin-l);
+    height: 1px; background: var(--rule);
+  }
+  .hscroll-progress-fill { height: 100%; background: var(--ksu-gold); width: 0%; }
+
+  /* ── MENTOR TAIL ── */
+  .article-scroll--tail {
+    position: relative; z-index: 10; width: 100%; padding: 0;
+  }
+
+  /* ── LIGHTBOX ── */
+  .lightbox-trigger {
+    appearance: none; border: 0; background: transparent;
+    display: block; width: 100%; padding: 0; cursor: zoom-in;
+  }
+  .lightbox-trigger img { pointer-events: none; }
+  .lightbox-overlay {
+    position: fixed; inset: 0; z-index: 950;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem; background: rgba(5,14,28,0.86);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    opacity: 0; pointer-events: none; transition: opacity 0.24s ease;
+  }
+  .lightbox-overlay.is-open { opacity: 1; pointer-events: auto; }
+  .lightbox-dialog { width: min(92vw, 1380px); }
+  .lightbox-figure { margin: 0; }
+  .lightbox-figure img {
+    width: 100%; max-height: 84vh; object-fit: contain;
+    display: block; box-shadow: 0 28px 60px rgba(0,0,0,0.22);
+  }
+  .lightbox-meta {
+    margin-top: 0.9rem; display: flex;
+    justify-content: space-between; gap: 1rem; align-items: center;
+  }
+  .lightbox-caption {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(255,255,255,0.68); line-height: 1.8;
+  }
+  .lightbox-close {
+    appearance: none; border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05); color: #fff;
+    padding: 0.7rem 1rem; border-radius: 999px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.18em;
+    text-transform: uppercase; cursor: pointer; transition: background 0.2s ease;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.1); }
 
   /* ── FOOTER ── */
-  .hub-footer {
-    background: var(--ksu-blue);
-    padding: 2rem 4rem;
-    border-top: 3px solid var(--ksu-gold);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
+  .article-close {
+    background: var(--ksu-blue); position: relative; z-index: 20;
+    border-top: 3px solid var(--ksu-gold); padding: 4.5rem 4.5rem 4rem;
   }
-  .hub-footer strong {
+  .article-close span {
     font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ksu-gold);
+    font-size: 0.55rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: rgba(255,255,255,0.52);
   }
-  .hub-footer span {
+  .article-close-ku {
     font-family: 'DM Mono', monospace;
-    font-size: 0.5rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
+    font-size: 0.68rem; letter-spacing: 0.26em;
+    text-transform: uppercase; color: var(--ksu-gold);
+    display: block; margin-bottom: 2.2rem;
+  }
+  .article-tagline {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 0.94rem; line-height: 1.88; color: rgba(255,255,255,0.48);
+    margin-top: 2.2rem; border-top: 1px solid rgba(255,255,255,0.09); padding-top: 2.2rem;
   }
 
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    :root { --col: calc(100vw - 3rem); --col-wide: calc(100vw - 3rem); --col-quote: calc(100vw - 3rem); --margin-l: 1.5rem; }
+    .panel-grid { grid-template-columns: 1fr; gap: 1.8rem; }
+    .panel-visual { order: -1; }
+    .panel-visual--sticky { position: static; }
+    .panel-visual--uncropped img { max-height: none; }
+  }
   @media (max-width: 600px) {
-    header { padding: 2rem 1.5rem 2rem; }
-    .grid { padding: 0 1rem 3rem; }
-    .hub-footer { padding: 1.5rem; }
+    .masthead { padding: 1.2rem 1.4rem; }
+    .hero-content { padding: 0 1.4rem 3.5rem; }
+    .standalone-quote-text { font-size: 1.5rem; }
+    .h-card--stat { width: 75vw; }
+    .h-card--photo { width: 62vw; }
+    .lightbox-overlay { padding: 1rem; }
+    .lightbox-meta { flex-direction: column; align-items: flex-start; }
+    .article-close { padding: 2.5rem 1.4rem; }
+    .byline { gap: 1.2rem; flex-wrap: wrap; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .scroll-cue, .text-panel, .standalone-quote,
+    .hand-poster, .hero-parallax-img, .masthead { transition: none; animation: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="top-bar"></div>
+<div id="loader">
+  <span class="loader-label">Loading</span>
+  <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderFill"></div></div>
+</div>
 
-<header>
-  <div class="header-eyebrow">Kent State Magazine &nbsp;·&nbsp; Design Review</div>
-  <div class="header-title">From Cleveland to Ecuador</div>
-  <div class="header-sub">Four layout directions for stakeholder review</div>
-  <div class="header-meta">
-    <span>Spring 2026</span>
-    <span>College of Aeronautics &amp; Engineering</span>
-    <span>Photography by Rami Daud</span>
+<div class="progress-bar" id="progress"></div>
+<div class="brand-bar"></div>
+
+<header class="masthead">
+  <div class="masthead-brand">
+    <span class="masthead-brandmark-wrap">
+      <img class="masthead-brandmark" src="KSM-logo-horizontal-invert.svg" alt="Kent State Magazine">
+    </span>
+    <span class="masthead-section">Field Notes &nbsp;/&nbsp; Research &amp; Impact</span>
   </div>
+  <span class="masthead-date">Spring 2026 &nbsp;·&nbsp; Engineering</span>
 </header>
 
-<div class="intro">
-  <div class="intro-rule"></div>
-  <p>Four distinct editorial directions for the Yariselle Andujar story. Each explores a different approach to typography, layout, and how the 3D-printed hand animation is integrated into the reading experience.</p>
-  <div class="intro-rule"></div>
+<!-- ── HERO ── -->
+<div class="hero-image-wrap" id="heroWrap">
+  <img class="hero-parallax-img" id="heroParallaxImg"
+       src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00060.jpg"
+       alt="Yariselle Andujar in the KSU engineering lab">
+  <div class="hero-gradient"></div>
+  <div class="hero-content hero">
+    <div class="hero-kicker">College of Aeronautics &amp; Engineering &nbsp;·&nbsp; Prosthetics</div>
+    <h1>From Cleveland<br>to Ecuador</h1>
+    <p class="hero-deck">One Flashes' mission to change lives, one limb at a time.</p>
+    <div class="byline">
+      <span>Photography by Rami Daud</span>
+      <span>Spring 2026</span>
+    </div>
+  </div>
 </div>
 
-<div class="grid">
+<div class="scroll-zone" id="scrollZone">
 
-  <!-- VERSION A -->
-  <a class="card" href="version-a.html" target="_blank">
-    <div class="card-thumb">
-      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00060.jpg" alt="">
-      <div class="card-thumb-overlay">
-        <span class="card-version-badge current">Version A &nbsp;·&nbsp; Primary</span>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-name">Scroll Animation — Immersive</div>
-      <div class="card-desc">Full-bleed 3D hand animation runs behind frosted editorial panels through the entire article. Parallax hero bleeds under the headline. Canvas-based, flicker-free scroll experience.</div>
-      <div class="card-tags">
-        <span class="tag gold">Animation-driven</span>
-        <span class="tag">White / light</span>
-        <span class="tag">Libre Baskerville</span>
-        <span class="tag">Full-article scroll</span>
-      </div>
-      <span class="card-cta">Open Version A →</span>
-    </div>
-  </a>
+  <!-- Hand: sticky full-viewport, positioned low by JS canvas drawing -->
+  <div class="hand-bg" id="handBg">
+    <img class="hand-poster is-visible" id="handPoster"
+         src="3D-printed_prosthetic_robotic_202604231257_00000.jpg"
+         alt="Animated sequence of a 3D-printed prosthetic hand">
+  </div>
 
-  <!-- VERSION B -->
-  <a class="card" href="version-b.html" target="_blank">
-    <div class="card-thumb">
-      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00079.jpg" alt="" style="object-position: center 25%;">
-      <div class="card-thumb-overlay">
-        <span class="card-version-badge">Version B</span>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="card-name">Light Editorial — Chapters &amp; Collage</div>
-      <div class="card-desc">Warm parchment background with numbered chapter dividers and gold rules. Photo collage grid, stats section. Animation embedded as its own chapter mid-article. Clean, print-magazine feel.</div>
-      <div class="card-tags">
-        <span class="tag">Parchment / warm</span>
-        <span class="tag">Playfair Display</span>
-        <span class="tag">Chapter structure</span>
-        <span class="tag">Photo collage</span>
-      </div>
-      <span class="card-cta">Open Version B →</span>
-    </div>
-  </a>
+  <!-- Article text — floats above the hand -->
+  <div class="article-scroll">
 
-  <!-- VERSION C -->
-  <a class="card" href="version-c.html" target="_blank">
-    <div class="card-thumb">
-      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00114.jpg" alt="" style="filter:brightness(0.5); object-position: center 10%;">
-      <div class="card-thumb-overlay">
-        <span class="card-version-badge">Version C</span>
-      </div>
+    <div class="reveal-spacer">
+      <span class="scroll-cue">↓ Scroll</span>
     </div>
-    <div class="card-body">
-      <div class="card-name">Cinematic — Animation as Hero</div>
-      <div class="card-desc">Opens with a full-screen scroll-driven hand animation that builds the headline in stages as you scroll. Then transitions to a clean editorial layout. Most dramatic first impression.</div>
-      <div class="card-tags">
-        <span class="tag gold">Animation-as-hero</span>
-        <span class="tag">Black → light</span>
-        <span class="tag">Playfair Display</span>
-        <span class="tag">Cinematic reveal</span>
-      </div>
-      <span class="card-cta">Open Version C →</span>
-    </div>
-  </a>
 
-  <!-- VERSION v2 -->
-  <a class="card" href="version-v2.html" target="_blank">
-    <div class="card-thumb">
-      <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00098.jpg" alt="" style="filter:brightness(0.45) saturate(0.5); object-position: center center;">
-      <div class="card-thumb-overlay">
-        <span class="card-version-badge">Version v2</span>
+    <!-- Opening -->
+    <div class="text-panel text-panel--lead">
+      <div class="panel-copy">
+        <span class="lead-label">Opening Scene</span>
+        <p class="lead-standfirst">A classroom spark in Cleveland turns into an international prosthetics mission — and a new engineering path at Kent State.</p>
+        <div class="article-text">
+          <p>On a warm spring evening in her Centennial Court residence hall room, Yariselle Andujar describes the moment everything clicked. She was a high school student in an AVID class in Cleveland when her teacher played a video about college — and something lit up inside her. Not just about higher education, but about what was possible.</p>
+          <p>That instinct for possibility has defined her life ever since. Now 19 and a freshman in Kent State's College of Aeronautics and Engineering — pursuing industrial engineering technology with plans to transition into mechatronics — Andujar is already a mentor, an innovator and a humanitarian.</p>
+          <p>She is also one of the founding members of a student-led program that has delivered 3D-printed prosthetic limbs to more than 50 children in Ecuador.</p>
+        </div>
       </div>
     </div>
-    <div class="card-body">
-      <div class="card-name">Dark Mode — Night Editorial</div>
-      <div class="card-desc">Near-black background throughout with gold accents. Three-column stats grid, left-border pull quotes. Bold photo mosaic. High contrast, contemporary digital magazine aesthetic.</div>
-      <div class="card-tags">
-        <span class="tag">Dark / night</span>
-        <span class="tag">Playfair Display</span>
-        <span class="tag">Stats grid</span>
-        <span class="tag">Photo mosaic</span>
+
+    <div class="gap" style="height: 24vh;"></div>
+
+    <!-- Science Center -->
+    <div class="text-panel text-panel--split">
+      <div class="panel-grid">
+        <div class="panel-copy">
+          <div class="article-text">
+            <p>The project started in 2022 at the Great Lakes Science Center in Cleveland, where Andujar and fellow student Daniela Valentina Moreno Machuca were part of a First Robotics team — the Argonauts, Team 8222. Working under robotics leader Timothy Hatfield, the two students noticed something remarkable: the same 3D-printing technology they were using to build affordable robot parts could be used to create prosthetic limbs.</p>
+            <p>The math was striking. A commercially manufactured prosthetic hand or arm for a child can cost between $5,000 and $10,000 — and children outgrow them. With 3D printing, the same device could be produced for as little as $55 to $60.</p>
+          </div>
+        </div>
+        <figure class="panel-visual panel-visual--uncropped panel-visual--sticky">
+          <button class="lightbox-trigger" type="button"
+            data-lightbox-src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00079.jpg"
+            data-lightbox-alt="Yariselle examining the prosthetic hand"
+            data-lightbox-caption="Examining iteration 20-something">
+            <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00079.jpg"
+                 alt="Yariselle examining the prosthetic hand">
+          </button>
+          <figcaption>Examining iteration 20-something</figcaption>
+        </figure>
       </div>
-      <span class="card-cta">Open Version v2 →</span>
     </div>
-  </a>
 
-</div>
+    <!-- Pull quote -->
+    <blockquote class="standalone-quote">
+      <span class="standalone-quote-mark">&ldquo;</span>
+      <p class="standalone-quote-text">Seeing the small things that they ask for — like being able to eat or wipe themselves — we don't understand how important that is for someone missing that in their life.</p>
+      <cite class="standalone-quote-attribution">Yariselle Andujar</cite>
+    </blockquote>
 
-<footer class="hub-footer">
-  <strong>Kent State University</strong>
-  <span>Design Review &nbsp;·&nbsp; Spring 2026 &nbsp;·&nbsp; Internal</span>
+    <!-- Ecuador -->
+    <div class="text-panel text-panel--split">
+      <div class="panel-grid">
+        <div class="panel-copy">
+          <div class="article-text">
+            <p>What began as a high school robotics idea quickly evolved into a full humanitarian program in partnership with Med Access International. In the summer of 2025, Andujar and five fellow Cleveland Metropolitan School District students traveled to Ecuador for nearly two weeks, fitting 20 children with prosthetic hands and arms at a local hospital — assisting in triage and helping youth shadow physicians during surgeries.</p>
+            <p>The group also trained students and teachers at a technical college on 3D printing and met with the Ministry of Health for the Republic of Ecuador to advocate for STEM education.</p>
+            <p>The team is now at work on a new model for a returning patient named Samantha — a young woman they first served on a previous trip. The newest design features a Japanese-style arm fitted with a custom sleeve socket, refined after the previous model did not perform as expected.</p>
+          </div>
+        </div>
+        <figure class="panel-visual panel-visual--uncropped panel-visual--sticky">
+          <button class="lightbox-trigger" type="button"
+            data-lightbox-src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00098.jpg"
+            data-lightbox-alt="Close-up of hands assembling the prosthetic"
+            data-lightbox-caption="The work in her hands">
+            <img src="Yari/260422-Magazine_Yari_Andujar_prosthestics_RD-00098.jpg"
+                 alt="Close-up of hands assembling the prosthetic">
+          </button>
+          <figcaption>The work in her hands</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="gap" style="height: 12vh;"></div>
+
+    <!-- Horizontal card carousel -->
+    <div class="hscroll-section" id="hscrollSection">
+      <div class="hscroll-viewport">
+        <div class="hscroll-header">
+          <span class="hscroll-kicker">By the Numbers &nbsp;·&nbsp; From the Field</span>
+          <span class="hscroll-hint" id="hscrollHint">↓ Keep scrolling</span>
+        </div>
+        <div class="hscroll-track-wrapper">
+          <div class="hscroll-track" id="hscrollTrack">
+
+            <div class="h-card h-card--stat">
+              <div class="h-stat-top">
+                <span class="h-stat-number">$55–60</span>
+                <span class="h-stat-label">Estimated 3D-printed cost</span>
+              </div>
+              <p class="h-stat-copy">The same basic device can be produced for a fraction of the cost of a traditional pediatric prosthetic.</p>
+            </div>
+
+            <div class="h-card h-card--stat">
+              <div class="h-stat-top">
+                <span class="h-stat-number">$5K–10K</span>
+                <span class="h-stat-label">Typical commercial range</span>
+              </div>
+              <p class="h-stat-copy">That price gap matters most for children, who outgrow devices quickly and need replacements as they develop.</p>
+            </div>
+
+            <div class="h-card h-card--stat">
+              <div class="h-stat-top">
+                <span class="h-stat-number">50+</span>
+                <span class="h-stat-label">Children served in Ecuador</span>
+              </div>
+              <p class="h-stat-copy">What began as a robotics insight has become an ongoing humanitarian effort with real patients and repeat fittings.</p>
+            </div>
+
+            <figure class="h-card h-card--photo">
+              <button class="lightbox-trigger" type="button"
+                data-lightbox-src="Yari/fromYari/20250604_160602.jpg"
+                data-lightbox-alt="Ecuador, Summer 2025"
+                data-lightbox-caption="Ecuador, Summer 2025">
+                <img src="Yari/fromYari/20250604_160602.jpg" alt="Ecuador, Summer 2025">
+              </button>
+              <figcaption>Ecuador, Summer 2025</figcaption>
+            </figure>
+
+            <figure class="h-card h-card--photo">
+              <button class="lightbox-trigger" type="button"
+                data-lightbox-src="Yari/fromYari/20250726_072430.jpg"
+                data-lightbox-alt="On the ground, Ibarra"
+                data-lightbox-caption="On the ground, Ibarra">
+                <img src="Yari/fromYari/20250726_072430.jpg" alt="On the ground, Ibarra">
+              </button>
+              <figcaption>On the ground, Ibarra</figcaption>
+            </figure>
+
+            <figure class="h-card h-card--photo">
+              <button class="lightbox-trigger" type="button"
+                data-lightbox-src="Yari/fromYari/Screenshot_20240805_210843_Instagram[93].jpg"
+                data-lightbox-alt="Argonauts, Team 8222"
+                data-lightbox-caption="Argonauts, Team 8222">
+                <img src="Yari/fromYari/Screenshot_20240805_210843_Instagram[93].jpg" alt="Argonauts, Team 8222">
+              </button>
+              <figcaption>Argonauts, Team 8222</figcaption>
+            </figure>
+
+          </div>
+        </div>
+        <div class="hscroll-progress">
+          <div class="hscroll-progress-fill" id="hscrollProgressFill"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /article-scroll -->
+
+  <!-- Mentor closing section -->
+  <div class="article-scroll article-scroll--tail">
+    <div class="gap" style="height: 18vh;"></div>
+    <div class="text-panel">
+      <div class="panel-copy">
+        <div class="article-text">
+          <p>Andujar has since transitioned from student participant to program mentor. She recently helped lead an interview process to select six high school students for the program's upcoming trip to Ibarra, Ecuador, planned for June 22 through July 2, 2026.</p>
+          <p>As a freshman focused on establishing her academic footing, she has spent this first year getting settled — visiting the university's combat robotics team, working briefly in a campus VR lab. She recently learned for the first time that the College of Aeronautics and Engineering has a design lab equipped with 3D printers that students may be able to access.</p>
+          <p>When asked what drives her, Andujar pauses. Then speaks with quiet certainty: "I think it gives me hope for the world. I just fell in love with the original concept that we created, and then it became something 10 times better."</p>
+        </div>
+      </div>
+    </div>
+    <div class="gap" style="height: 16vh;"></div>
+  </div>
+
+</div><!-- /scroll-zone -->
+
+<footer class="article-close">
+  <span class="article-close-ku">Kent State University</span>
+  <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+    <span>Field Notes &nbsp;·&nbsp; Research &amp; Impact</span>
+    <span>Photography &nbsp;·&nbsp; Rami Daud</span>
+  </div>
+  <p class="article-tagline">Yariselle Andujar is a freshman in the College of Aeronautics and Engineering at Kent State University, pursuing industrial engineering technology. She is from Cleveland, Ohio.</p>
 </footer>
 
+<div class="lightbox-overlay" id="lightboxOverlay" aria-hidden="true">
+  <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Expanded image view">
+    <figure class="lightbox-figure">
+      <img id="lightboxImage" src="" alt="">
+      <div class="lightbox-meta">
+        <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
+        <button class="lightbox-close" id="lightboxClose" type="button">Close</button>
+      </div>
+    </figure>
+  </div>
+</div>
+
+<script>
+const FRAMES = Array.from({length: 192}, (_, i) => `images/Frame ${i}.jpg`);
+
+const bg          = document.getElementById('handBg');
+const handPoster  = document.getElementById('handPoster');
+const loaderFill  = document.getElementById('loaderFill');
+const loader      = document.getElementById('loader');
+const progressBar = document.getElementById('progress');
+const scrollCue   = document.querySelector('.scroll-cue');
+const scrollZone  = document.getElementById('scrollZone');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const saveData    = Boolean(navigator.connection && navigator.connection.saveData);
+const useStatic   = reducedMotion || saveData;
+
+// ── Canvas ──
+const canvas = document.createElement('canvas');
+canvas.setAttribute('aria-hidden', 'true');
+canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;';
+bg.appendChild(canvas);
+const dpr = Math.min(window.devicePixelRatio || 1, 2);
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width  = bg.offsetWidth  * dpr;
+  canvas.height = bg.offsetHeight * dpr;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas, { passive: true });
+
+// ── Draw: cover-scale, centered, gently bottom-shifted ──
+function drawFrame(img) {
+  const cw = canvas.width, ch = canvas.height;
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  const scale = Math.max(cw / iw, ch / ih);
+  const dw = iw * scale, dh = ih * scale;
+  // Hand sits at 40–55% of 1920px source. dx positions palm at ~70–86% of viewport.
+  const dx = cw - dw * 0.68;
+  const dy = (ch - dh) * 0.88;
+  ctx.clearRect(0, 0, cw, ch);
+  ctx.drawImage(img, dx, dy, dw, dh);
+}
+
+// ── Frame loading ──
+let currentFrame = -1, rafPending = false, pendingFrame = 0;
+let loadedFrames = 0, activeLoader = 0, completedLoader = 0;
+const MAX_CONCURRENT = 8;
+const images = new Array(FRAMES.length);
+
+function updateLoader() {
+  loaderFill.style.width = Math.max(6, Math.min(100, Math.round(loadedFrames / FRAMES.length * 100))) + '%';
+}
+function hideLoader() { loader.classList.add('done'); }
+
+function setFrame(idx) {
+  if (idx === currentFrame) return;
+  currentFrame = idx;
+  ensureFrame(idx); warmFrames(idx, 5);
+  if (images[idx]?.complete && images[idx].naturalWidth) {
+    drawFrame(images[idx]); handPoster.classList.remove('is-visible');
+  } else { handPoster.classList.add('is-visible'); }
+}
+
+function ensureFrame(i) {
+  if (i < 0 || i >= FRAMES.length || images[i]) return;
+  const img = new Image(); images[i] = img;
+  img.onload = () => {
+    loadedFrames++; updateLoader();
+    if (i === 0) hideLoader();
+    if (i === currentFrame) { drawFrame(img); handPoster.classList.remove('is-visible'); }
+  };
+  img.onerror = () => { loadedFrames++; updateLoader(); if (i === 0) hideLoader(); };
+  img.src = FRAMES[i];
+}
+
+function queueLoad(i) {
+  if (i < 0 || i >= FRAMES.length || images[i] || activeLoader >= MAX_CONCURRENT) return;
+  activeLoader++; ensureFrame(i);
+  const img = images[i];
+  if (img.complete) { activeLoader--; runQueue(); return; }
+  const settle = () => { img.removeEventListener('load',settle); img.removeEventListener('error',settle); activeLoader--; runQueue(); };
+  img.addEventListener('load', settle, {once:true});
+  img.addEventListener('error', settle, {once:true});
+}
+
+function runQueue() {
+  while (activeLoader < MAX_CONCURRENT && completedLoader < FRAMES.length) queueLoad(loadOrder[completedLoader++]);
+}
+function warmFrames(c, r) { for (let o=1;o<=r;o++) { queueLoad(c+o); queueLoad(c-o); } }
+
+const loadOrder = Array.from({length:FRAMES.length},(_,i)=>i)
+  .sort((a,b) => a===0?-1:b===0?1:a-b);
+
+// ── Horizontal scroll section ──
+const hscrollSection = document.getElementById('hscrollSection');
+const hscrollTrack   = document.getElementById('hscrollTrack');
+const hscrollFill    = document.getElementById('hscrollProgressFill');
+const hscrollHint    = document.getElementById('hscrollHint');
+let hscrollTranslate = 0, hscrollSectionTop = 0;
+
+function calcHScroll() {
+  const pad = parseFloat(getComputedStyle(hscrollTrack).paddingLeft) || 80;
+  hscrollTranslate = Math.max(0, hscrollTrack.scrollWidth - window.innerWidth + pad);
+  hscrollSection.style.height = `calc(100vh + ${hscrollTranslate}px)`;
+  hscrollSectionTop = hscrollSection.getBoundingClientRect().top + window.scrollY;
+}
+
+function updateHScroll() {
+  if (hscrollTranslate <= 0) return;
+  const progress = Math.max(0, Math.min(1, (window.scrollY - hscrollSectionTop) / hscrollTranslate));
+  hscrollTrack.style.transform = `translateX(${-progress * hscrollTranslate}px)`;
+  hscrollFill.style.width = (progress * 100) + '%';
+  if (progress > 0.04) hscrollHint.classList.add('hidden');
+  else hscrollHint.classList.remove('hidden');
+}
+
+// ── Main scroll handler ──
+function onScroll() {
+  const zoneTop = scrollZone.getBoundingClientRect().top + window.scrollY;
+  const scrolled = Math.max(0, window.scrollY - zoneTop);
+  const ratio = Math.min(1, scrolled / Math.max(1, scrollZone.scrollHeight - window.innerHeight));
+  const curvedRatio = Math.min(1, Math.pow(ratio, 0.5));
+  const pageH = document.body.scrollHeight - window.innerHeight;
+  progressBar.style.width = (window.scrollY / pageH * 100) + '%';
+
+  const n = FRAMES.length, ppLen = (n-1)*2;
+  const ppIdx = Math.round(curvedRatio * ppLen);
+  const frame = ppIdx <= n-1 ? ppIdx : ppLen - ppIdx;
+  pendingFrame = Math.max(0, Math.min(n-1, frame));
+
+  if (!rafPending) {
+    rafPending = true;
+    requestAnimationFrame(() => {
+      if (!useStatic) {
+        setFrame(pendingFrame);
+        bg.style.transform = `scale(${1 + curvedRatio * 0.025})`;
+      }
+      if (window.scrollY > 180) scrollCue.classList.add('hidden');
+      else scrollCue.classList.remove('hidden');
+      updateHScroll();
+      rafPending = false;
+    });
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', () => { resizeCanvas(); calcHScroll(); }, { passive: true });
+onScroll();
+
+if (useStatic) { handPoster.classList.add('is-visible'); hideLoader(); }
+else { queueLoad(0); warmFrames(0,6); runQueue(); }
+
+// Fade-in observer
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.text-panel, .standalone-quote').forEach(p => obs.observe(p));
+
+// ── Hero parallax ──
+const heroParallaxImg = document.getElementById('heroParallaxImg');
+const masthead        = document.querySelector('.masthead');
+const heroWrap        = document.getElementById('heroWrap');
+
+function onHeroScroll() {
+  const y = window.scrollY;
+  if (heroParallaxImg) heroParallaxImg.style.transform = `translateY(${y * 0.4}px)`;
+  if (y > heroWrap.offsetHeight - 80) masthead.classList.add('scrolled');
+  else masthead.classList.remove('scrolled');
+}
+window.addEventListener('scroll', onHeroScroll, { passive: true });
+onHeroScroll();
+
+// ── Lightbox ──
+const lightboxOverlay = document.getElementById('lightboxOverlay');
+const lightboxImage   = document.getElementById('lightboxImage');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxClose   = document.getElementById('lightboxClose');
+
+document.querySelectorAll('.lightbox-trigger').forEach(t => {
+  t.addEventListener('click', () => {
+    lightboxImage.src = t.dataset.lightboxSrc;
+    lightboxImage.alt = t.dataset.lightboxAlt || '';
+    lightboxCaption.textContent = t.dataset.lightboxCaption || '';
+    lightboxOverlay.classList.add('is-open');
+    lightboxOverlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeLightbox() {
+  lightboxOverlay.classList.remove('is-open');
+  lightboxOverlay.setAttribute('aria-hidden','true');
+  lightboxImage.src = ''; document.body.style.overflow = '';
+}
+lightboxClose.addEventListener('click', closeLightbox);
+lightboxOverlay.addEventListener('click', e => { if (e.target === lightboxOverlay) closeLightbox(); });
+window.addEventListener('keydown', e => { if (e.key==='Escape' && lightboxOverlay.classList.contains('is-open')) closeLightbox(); });
+
+requestAnimationFrame(() => requestAnimationFrame(calcHScroll));
+</script>
 </body>
 </html>

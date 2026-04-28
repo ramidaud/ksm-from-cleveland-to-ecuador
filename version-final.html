@@ -605,22 +605,14 @@ p:last-child { margin-bottom: 0; }
 .spacer    { height: 96px; }
 .spacer-sm { height: 56px; }
 
-/* Animation top/bottom bleed gradient */
-.anim-fade-top,
-.anim-fade-bottom {
+/* Animation top bleed gradient */
+.anim-fade-top {
   position: absolute;
-  left: 0; right: 0;
-  height: 180px;
+  top: 0; left: 0; right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
   pointer-events: none;
   z-index: 2;
-}
-.anim-fade-top {
-  top: 0;
-  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
-}
-.anim-fade-bottom {
-  bottom: 0;
-  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
 }
 
 /* Footer — KSU blue + gold top rule */
@@ -755,7 +747,6 @@ footer img { height: 20px; filter: brightness(0) invert(1); opacity: 0.65; }
   <div class="anim-sticky">
     <canvas id="anim-canvas"></canvas>
     <div class="anim-fade-top"></div>
-    <div class="anim-fade-bottom"></div>
 
     <div class="anim-text" id="anim-t1">
       <div class="anim-text-kicker">The Hand</div>
@@ -932,30 +923,28 @@ function drawFrame(idx) {
 }
 
 // ── RAF-THROTTLED SCROLL HANDLER ──
-let rafPending  = false;
-let pendingProg = 0;
-let pendingIdx  = 0;
+let rafPending    = false;
+let pendingProg   = 0;
+let pendingIdx    = 0;
+let pendingScrollY = 0;
+let pendingPageH   = 1;
+let pendingHeroH   = 0;
+let pendingPanels  = [];
 
 function onScroll() {
   const scrollY = window.scrollY;
   const heroH   = heroWrap.offsetHeight;
   const pageH   = document.body.scrollHeight - window.innerHeight;
 
-  // Reading progress bar
-  progressBar.style.width = (scrollY / pageH * 100) + '%';
+  pendingScrollY = scrollY;
+  pendingPageH   = pageH;
+  pendingHeroH   = heroH;
 
-  // Masthead: ghost → solid
+  // Class toggles are cheap — keep immediate so masthead snaps correctly
   masthead.classList.toggle('scrolled', scrollY > heroH - 80);
-
-  // Hero parallax
-  if (scrollY < heroH) {
-    heroImg.style.transform = `translateY(${scrollY * 0.35}px)`;
-  }
-
-  // Hero scroll cue
   scrollCue.classList.toggle('hidden', scrollY > 160);
 
-  // Animation progress (0→1 as you scroll through the 420vh section)
+  // Animation progress (0→1 across the 420vh section)
   const rect  = animSection.getBoundingClientRect();
   const animH = animSection.clientHeight - window.innerHeight;
   const prog  = Math.max(0, Math.min(1, -rect.top / animH));
@@ -963,22 +952,27 @@ function onScroll() {
   pendingProg = prog;
   pendingIdx  = Math.round(prog * (FRAMES.length - 1));
 
-  // Hint fades out on first scroll
-  animHint.style.opacity = prog > 0.02 ? '0' : '1';
-
-  // Text panels: fade in, hold, fade out
+  // Pre-compute text panel values (no DOM writes yet)
   const fadeW = 0.09;
-  textPanels.forEach(({ el, from, to }) => {
+  pendingPanels = textPanels.map(({ el, from, to }) => {
     const inFade  = Math.min(1, Math.max(0, (prog - from) / fadeW));
     const outFade = 1 - Math.min(1, Math.max(0, (prog - (to - fadeW)) / fadeW));
-    const opacity = Math.min(inFade, outFade);
-    el.style.opacity = opacity;
-    el.style.transform = `translateY(calc(-50% + ${(1 - inFade) * 20}px))`;
+    return { el, opacity: Math.min(inFade, outFade), lift: (1 - inFade) * 20 };
   });
 
   if (!rafPending) {
     rafPending = true;
     requestAnimationFrame(() => {
+      // All style mutations happen here, synced to paint
+      progressBar.style.width = (pendingScrollY / pendingPageH * 100) + '%';
+      if (pendingScrollY < pendingHeroH) {
+        heroImg.style.transform = `translateY(${pendingScrollY * 0.35}px)`;
+      }
+      animHint.style.opacity = pendingProg > 0.02 ? '0' : '1';
+      pendingPanels.forEach(({ el, opacity, lift }) => {
+        el.style.opacity = opacity;
+        el.style.transform = `translateY(calc(-50% + ${lift}px))`;
+      });
       drawFrame(pendingIdx);
       rafPending = false;
     });
